@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<div>
+  <%= @student.name %>
+  C <%= @medical_certificate.from %>
+  По <%= @medical_certificate.till %>
+</div>
+<%= link_to 'Back', student_medical_certificates_path(@student), class: "btn btn-default" %>
+<%= link_to 'Delete', student_medical_certificate_path(@student, @medical_certificate),
+    method: :delete,
+    data: { confirm: 'Are you sure?' },
+    class: "btn btn-danger" %>

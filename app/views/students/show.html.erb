@@ -1,0 +1,44 @@
+<div class="page-header">
+  <h1>Student info</h1>
+</div>
+<div class="btn-group" role="group" aria-label="...">
+  <%= link_to 'Back', students_path, class: "btn btn-default" %>
+  <%= link_to 'Edit', edit_student_path(@student), class: "btn btn-primary" %>
+  <%= link_to 'Справки', student_medical_certificates_path(@student), class: "btn btn-success" %>
+</div>
+  <br> <br>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Студент</b></div>
+  <div class="panel-body">
+    <ul class=""></ul>
+    <%= @student.name %>
+  </div>
+  <div class="panel-footer"><b>Пропуски</b></div>
+    <table class="table table-bordered">
+      <tr>
+        <th>Предмет</th>
+        <th>Часов пропусков</th>
+      </tr>
+      <% @absences.each do |a| %>
+        <tr>
+          <td><%= link_to a.lesson.name, lesson_logs_path(a.lesson.id) %></td>
+          <td><%= a.amount %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <th colspan="2">Отчет</th>
+      </tr>
+      <tr>
+        <td>Часов</td>
+        <td><%= flash[:total] %></td>
+      </tr>
+      <tr>
+        <td>По справкам</td>
+        <td><%= flash[:leaves] %></td>
+      </tr>
+      <tr>
+        <td>Итого</td>
+        <td><%= flash[:total] - flash[:leaves] %></td>
+      </tr>
+    </table>
+</div>

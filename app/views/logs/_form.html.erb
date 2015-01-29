@@ -1,0 +1,42 @@
+<%= link_to 'New Log', new_lesson_log_path, class: "btn btn-success" %>
+<br/><br/>
+<table class="table table-bordered">
+  <tr>
+    <th scope="row"><%=  %></th>
+    <% flash[:dates].each do |date| %>
+        <th><%= link_to "#{date.date.day}/#{date.date.month}", show_lesson_log_path(params[:lesson_id], date.date)%></th>
+    <% end %>
+  </tr>
+  <% @logs.each_with_index do |log, index| medical_certificates = @medical_certificates.where(student_id: flash[:students][index].id) %>
+      <tr>
+        <td><%= link_to flash[:students][index].name, student_path(flash[:students][index].id) %></td>
+        <% log.each do |l| leave = false %>
+            <td>
+              <% if l.flag %>
+                  <label class="btn btn-primary ">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                  </label>
+              <% else
+                   if medical_certificates.any?
+                     medical_certificates.each do |mc|
+                       if l.date.between?(mc.from, mc.till)
+                         leave = true
+                         break
+                       end
+                     end
+                   end
+                   if leave %>
+                      <label class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                      </label>
+                  <% else %>
+                      <label class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                      </label>
+                  <% end %>
+              <% end %>
+            </td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>

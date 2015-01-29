@@ -1,0 +1,37 @@
+<div class="page-header">
+  <h1>Listing Students</h1>
+</div>
+<% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+<% end -%>
+
+<%= link_to 'New Student', new_student_path, class: "btn btn-success" %>
+<br/> <br/>
+
+<table class="table table-responsive">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>ФИО</th>
+      <th>Часов пропусков</th>
+      <th>Управление</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @students.each_with_index do |student, index| %>
+      <tr>
+        <th scope="row"><%= index+1 %></th>
+        <td><%= student.name %></td>
+        <td><%= student.absences.sum(:amount) %></td>
+        <td>
+          <div class="btn-group" role="group" aria-label="...">
+            <%= link_to 'Show', student, class: "btn btn-success" %>
+            <%= link_to 'Edit', edit_student_path(student), class: "btn btn-primary" %>
+            <%= link_to 'Destroy', student, method: :delete,
+                      data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

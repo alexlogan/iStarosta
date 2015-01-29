@@ -1,0 +1,24 @@
+<div class="page-header">
+  <h1>Listing Lessons</h1>
+</div>
+<% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+<% end -%>
+<%= link_to 'New Lesson', new_lesson_path, class: "btn btn-success" %> <br/> <br/>
+<table class="table table-responsive">
+    <% @lessons.each_with_index do |lesson, index| %>
+      <tr>
+        <th class="row"><%= index+1 %></th>
+        <th><%= link_to lesson.name, lesson_logs_path(lesson.id) %></th>
+        <td>
+          <div class="btn-group" role="group" aria-label="...">
+            <%= link_to 'View logs', lesson_logs_path(lesson.id), class: "btn btn-success" %>
+            <%= link_to 'Edit', edit_lesson_path(lesson), class: "btn btn-primary" %>
+            <%= link_to 'Destroy', lesson,
+                      method: :delete, data: { confirm: 'Are you sure?' },
+                      class: "btn btn-danger" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+</table>

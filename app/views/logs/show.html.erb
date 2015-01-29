@@ -1,0 +1,19 @@
+<div class="container">
+
+  <% @log.each do |log| %>
+      <% if log.flag %>
+          <div class="btn btn-block btn-lg btn-primary">
+            <%= log.student.name %>
+          </div>
+      <% else %>
+          <div class="btn btn-block btn-lg btn-default">
+            <%= log.student.name %>
+          </div>
+      <% end %>
+
+  <% end %>
+  <%= link_to 'Back', lesson_logs_path, class: "btn btn-default" %>
+  <%= link_to 'Edit', edit_lesson_log_path, class: "btn btn-default"%>
+  <%= link_to 'Delete', destroy_lesson_log_path, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+
+</div>

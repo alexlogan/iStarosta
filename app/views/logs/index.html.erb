@@ -1,0 +1,70 @@
+<div class="page-header">
+  <h1>Listing Logs</h1>
+</div>
+<% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+<% end -%>
+
+<%= link_to 'New Log', new_lesson_log_path, class: "btn btn-success" %>
+<br/><br/>
+
+<table class="table table-responsive">
+  <thead>
+    <tr>
+      <th scope="row"></th>
+      <% @grid.column_headers.each do |column_header| %>
+          <th><%= link_to column_header.to_formatted_s(:short), edit_lesson_log_path(params[:lesson_id], column_header) %></th>
+      <% end %>
+    </tr>
+  </thead>
+ <tbody>
+ <% @grid.rows.each do |row| medical_certificates = @medical_certificates.where(student_id: row.header.id) %>
+     <tr>
+       <th><%= link_to row.header.name, student_path(row.header) %></th>
+       <% row.data.each do |data| leave = false %>
+           <td>
+             <% if data.flag %>
+                 <label class="btn btn-primary">
+                   <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                 </label>
+             <% else
+                  if medical_certificates.any?
+                    medical_certificates.each do |mc|
+                      if data.date.between?(mc.from, mc.till)
+                        leave = true
+                        break
+                      end
+                    end
+                  end
+                  if leave %>
+                     <label class="btn btn-success">
+                       <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                     </label>
+                 <% else %>
+                     <label class="btn btn-danger">
+                       <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                     </label>
+                 <% end %>
+             <% end %>
+           </td>
+       <% end %>
+     </tr>
+ <%end %>
+ </tbody>
+</table>
+
+
+
+
+<label class="btn btn-primary ">
+  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+</label>
+- Присутствовал <br/><br/>
+<label class="btn btn-danger">
+  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+</label>
+- Отсутствовал <br/><br/>
+<label class="btn btn-success">
+  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+</label>
+- Отсутствовал по справке

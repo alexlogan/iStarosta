@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1>Listing Medical Certificates</h1>
+</div>
+
+<% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+<% end -%>
+
+<%= link_to 'New Medical certificate', new_student_medical_certificate_path, class: "btn btn-success" %>
+<%= link_to 'Back', student_path(@student), class: "btn btn-default" %>
+<br><br>
+<table class="table table-responsive">
+  <thead>
+    <tr>
+      <th class="row">#</th>
+      <th>From</th>
+      <th>Until</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @medical_certificates.each_with_index do |medical_certificate, index| %>
+  <tr>
+    <th><%= index+1 %></th>
+    <td><%= medical_certificate.from %></td>
+    <td><%= medical_certificate.till %></td>
+    <td>
+      <div class="btn-group" role="group" aria-label="...">
+          <%= link_to 'Edit', edit_student_medical_certificate_path(@student, medical_certificate),
+                        class: "btn btn-primary" %>
+          <%= link_to 'Destroy', student_medical_certificate_path(@student, medical_certificate),
+                        method: :delete, data: { confirm: 'Are you sure?' },
+                        class: "btn btn-danger" %>
+      </div>
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+

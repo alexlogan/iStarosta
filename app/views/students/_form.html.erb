@@ -1,0 +1,23 @@
+<div class="col-md-5 col-sm-5 col-xs-10">
+
+<%= form_for(@student, html: {class: "form-horizontal"}) do |f| %>
+  <% if @student.errors.any? %>
+    <div id="error_explanation">
+      <% @student.errors.full_messages.each do |message| %>
+          <%= content_tag :div, message, class: "alert alert-danger"%>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control", placeholder: "Enter name" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit class: "btn btn-primary" %>
+      <%= link_to 'Back', @student.new_record? ? students_path : student_path, class: "btn btn-default" %>
+    </div>
+  <% end %>
+  </div>
+</div>
