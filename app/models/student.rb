@@ -22,7 +22,7 @@ class Student < ActiveRecord::Base
 
   def create_logs
     if Log.any?
-      lessons_log = Log.all.group(:lesson_id)
+      lessons_log = Log.select(:lesson_id).distinct
       lessons_log.each_with_index do |lesson_log|
         dates_log = Log.where(lesson_id: lesson_log.lesson_id).group(:date)
         dates_log.each do |date_log|
