@@ -1,7 +1,6 @@
 <div class="page-header">
   <h1>New Log</h1>
 </div>
-<div class="container">
 <%= form_tag({action: "create"},class: "form-horizontal") do %>
       <div class="form-group">
         <% @students.each do |student| %>
@@ -26,4 +25,3 @@
       </div>
 
 <% end %>
-</div>

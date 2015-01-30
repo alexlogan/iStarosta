@@ -13,44 +13,41 @@
 
 ActiveRecord::Schema.define(version: 20150125163048) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "absences", force: :cascade do |t|
-    t.integer  "student_id", null: false
-    t.integer  "lesson_id",  null: false
-    t.integer  "amount",     null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "student_id", limit: 4, null: false
+    t.integer  "lesson_id",  limit: 4, null: false
+    t.integer  "amount",     limit: 4, null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "logs", force: :cascade do |t|
-    t.integer  "student_id",                 null: false
-    t.integer  "lesson_id",                  null: false
-    t.boolean  "flag",       default: false, null: false
-    t.date     "date",                       null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "student_id", limit: 4,                 null: false
+    t.integer  "lesson_id",  limit: 4,                 null: false
+    t.boolean  "flag",       limit: 1, default: false, null: false
+    t.date     "date",                                 null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "medical_certificates", force: :cascade do |t|
-    t.integer  "student_id", null: false
-    t.date     "from",       null: false
-    t.date     "till",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "student_id", limit: 4, null: false
+    t.date     "from",                 null: false
+    t.date     "till",                 null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "students", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
 end
