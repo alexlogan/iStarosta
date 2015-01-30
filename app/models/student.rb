@@ -24,7 +24,7 @@ class Student < ActiveRecord::Base
     if Log.any?
       lessons_log = Log.select(:lesson_id).distinct
       lessons_log.each_with_index do |lesson_log|
-        dates_log = Log.where(lesson_id: lesson_log.lesson_id).group(:date)
+        dates_log = Log.select(:date).where(lesson_id: lesson_log.lesson_id).distinct
         dates_log.each do |date_log|
           Log.create({
               student_id: self.id,
