@@ -1,6 +1,6 @@
 class Lesson < ActiveRecord::Base
   has_many :logs, dependent: :delete_all
-  has_one :absence, dependent: :delete
+  has_many :absence, dependent: :delete_all
 
   after_save :create_absence
   validates :name,

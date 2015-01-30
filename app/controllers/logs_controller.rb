@@ -81,13 +81,12 @@ class LogsController < ApplicationController
   end
 
   private
-
-  def check_lesson_id(id = params[:lesson_id])
-    unless Lesson.exists?(id: id)
-      flash[:danger] = 'Lesson with this id does not exist'
-      redirect_to controller: :lessons, action: :index
+    def check_lesson_id(id = params[:lesson_id])
+      unless Lesson.exists?(id: id)
+        flash[:danger] = 'Lesson with this id does not exist'
+        redirect_to controller: :lessons, action: :index
+      end
     end
-  end
 
   # Use callbacks to share common setup or constraints between actions.
     def set_log
