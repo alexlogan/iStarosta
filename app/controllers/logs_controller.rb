@@ -6,7 +6,7 @@ class LogsController < ApplicationController
   # GET /logs
   # GET /logs.json
   def index
-    logs = Log.includes(:student).where(lesson_id: params[:lesson_id])
+    logs = Log.includes(:student).where(lesson_id: params[:lesson_id]).order(:date)
     @grid = PivotTable::Grid.new do |g|
       g.source_data = logs
       g.column_name = :date
@@ -15,7 +15,7 @@ class LogsController < ApplicationController
     end
     @grid.build
     @medical_certificates = MedicalCertificate.all
-    # render json: @grid
+    # render json: @grid.row_headers
   end
 
   # GET /logs/1

@@ -3,7 +3,8 @@ class Student < ActiveRecord::Base
   has_many :logs, dependent: :delete_all
   has_many :absences, dependent: :delete_all
 
-  after_save :create_absence
+  after_create :create_absence
+  after_create :create_logs
   validates :name,
             presence:true,
             uniqueness: true,
@@ -16,6 +17,24 @@ class Student < ActiveRecord::Base
   def create_absence
     Lesson.all.each do |lesson|
       Absence.create({student_id: self.id, lesson_id: lesson.id, amount: 0})
+    end
+  end
+
+  def create_logs
+    if Log.any?
+      lessons_log = Log.all.group(:lesson_id)
+      lessons_log.each_with_index do |lesson_log|
+        dates_log = Log.where(lesson_id: lesson_log.lesson_id).group(:date)
+        dates_log.each do |date_log|
+          Log.create({
+              student_id: self.id,
+              lesson_id: lesson_log.lesson_id,
+              flag: false,
+              date: date_log.date
+            })
+        end
+      end
+
     end
   end
 end
