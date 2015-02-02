@@ -1,4 +1,5 @@
 class Student < ActiveRecord::Base
+  belongs_to :group
   has_many :medical_certificates, dependent: :destroy
   has_many :logs, dependent: :delete_all
   has_many :absences, dependent: :delete_all

@@ -1,4 +1,5 @@
 class Lesson < ActiveRecord::Base
+  belongs_to :group
   has_many :logs, dependent: :delete_all
   has_many :absence, dependent: :delete_all
 

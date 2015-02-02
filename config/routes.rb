@@ -1,27 +1,18 @@
 Rails.application.routes.draw do
 
+  devise_for :users
+
   resources :students do
     resources :medical_certificates
   end
 
-  resources :lessons
-
-
-  get 'lessons/:lesson_id/logs' => 'logs#index', as: :lesson_logs
-
-  post 'lessons/:lesson_id/logs' => 'logs#create'
-
-  get 'lessons/:lesson_id/logs/new' => 'logs#new', as: :new_lesson_log
-
-  get 'lessons/:lesson_id/logs/:date/edit' => 'logs#edit', as: :edit_lesson_log
-
-  get 'lessons/:lesson_id/logs/:date' => 'logs#show', as: :show_lesson_log
-
-  patch 'lessons/:lesson_id/logs/:date' => 'logs#update', as: :update_lesson_log
-
-  delete 'lessons/:lesson_id/logs/:date' => 'logs#destroy', as: :destroy_lesson_log
+  resources :lessons do
+    resources :logs, param: :date
+  end
 
   root 'lessons#index'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

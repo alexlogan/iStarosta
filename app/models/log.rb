@@ -1,6 +1,7 @@
 class Log < ActiveRecord::Base
   belongs_to :lesson
   belongs_to :student
+  belongs_to :group
   before_save :check_student_id
   after_create :set_absences, unless: :flag?
   after_update :update_absences,

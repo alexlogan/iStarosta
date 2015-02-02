@@ -34,12 +34,12 @@ gem 'jquery-turbolinks'
 # Pivot_table
 gem 'pivot_table'
 
-# gem 'simple_form'
+gem 'simple_form'
 
 # paginator kaminari
 # gem 'kaminari'
 
-# gem 'devise'
+gem 'devise'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

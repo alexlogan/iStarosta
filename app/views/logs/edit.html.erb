@@ -3,7 +3,7 @@
   <h1>Editing Log</h1>
 </div>
 <div class="container">
-  <%= form_tag(update_lesson_log_path(params[:lesson_id], @log[0].date), class: "form-horizontal") do %>
+  <%= form_tag(lesson_log_path(params[:lesson_id], @log[0].date), class: "form-horizontal") do %>
       <%= hidden_field_tag :_method, :patch %>
       <div class="form-group">
         <% @students.each_with_index do |student, index| %>
@@ -32,7 +32,7 @@
 
       <div class="form-group">
         <%= submit_tag "Save", class: "btn btn-primary" %>
-        <%= link_to 'Delete', destroy_lesson_log_path, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'Delete', lesson_log_path, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
       </div>
 
     <% end %>
