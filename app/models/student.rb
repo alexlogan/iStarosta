@@ -8,7 +8,7 @@ class Student < ActiveRecord::Base
   after_create :create_logs
   validates :name,
             presence:true,
-            uniqueness: true,
+            # uniqueness: true,
             format: {
                 with: /\A[а-яА-Я\s]+/,
                 message: "only allows letters"
@@ -16,16 +16,16 @@ class Student < ActiveRecord::Base
 
   private
   def create_absence
-    Lesson.all.each do |lesson|
+    group.lessons.all.each do |lesson|
       Absence.create({student_id: self.id, lesson_id: lesson.id, amount: 0})
     end
   end
 
   def create_logs
-    if Log.any?
-      lessons_log = Log.select(:lesson_id).distinct
+    if group.logs.any?
+      lessons_log = group.logs.select(:lesson_id).distinct
       lessons_log.each_with_index do |lesson_log|
-        dates_log = Log.select(:date).where(lesson_id: lesson_log.lesson_id).distinct
+        dates_log = group.logs.select(:date).where(lesson_id: lesson_log.lesson_id).distinct
         dates_log.each do |date_log|
           Log.create({
               student_id: self.id,

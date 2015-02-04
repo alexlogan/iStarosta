@@ -28,8 +28,8 @@
                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                  </label>
              <% else
-                  if medical_certificates.any?
-                    medical_certificates.each do |mc|
+                  if row.header.medical_certificates.any?
+                    row.header.medical_certificates.each do |mc|
                       if data.date.between?(mc.from, mc.till)
                         leave = true
                         break

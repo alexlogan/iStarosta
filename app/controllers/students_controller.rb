@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  before_filter :authenticate_user!, except: [:index, :show]
+  before_action :set_group
   before_action :set_student, only: [:show, :edit, :update, :destroy]
   before_action :set_leaves, only: :show
   before_action :set_absences, only: :show
@@ -6,7 +8,7 @@ class StudentsController < ApplicationController
   # GET /students
   # GET /students.json
   def index
-    @students = Student.all.order(:name)
+    @students = @group.students.all.order(:name)
   end
 
   # GET /students/1
@@ -16,7 +18,7 @@ class StudentsController < ApplicationController
 
   # GET /students/new
   def new
-    @student = Student.new
+    @student = @group.students.build
   end
 
   # GET /students/1/edit
@@ -26,7 +28,7 @@ class StudentsController < ApplicationController
   # POST /students
   # POST /students.json
   def create
-    @student = Student.new(student_params)
+    @student = @group.students.build(student_params)
 
     respond_to do |format|
       if @student.save
@@ -64,10 +66,18 @@ class StudentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_group
+      if session[:group_id].blank?
+        redirect_to groups_path, flash: {danger: 'Select group at fist.' }
+      else
+        @group = Group.find(session[:group_id])
+      end
+    end
+
+  # Use callbacks to share common setup or constraints between actions.
     def set_student
-      if Student.exists?(id: params[:id])
-        @student = Student.find(params[:id])
+      if @group.students.exists?(id: params[:id])
+        @student = @group.students.find(params[:id])
       else
         flash[:danger] = 'Student with this id does not exist'
         redirect_to students_path
@@ -76,9 +86,9 @@ class StudentsController < ApplicationController
 
     def set_leaves
       flash.now[:leaves] = 0
-      medical_certificates = MedicalCertificate.find_by_student_id(@student)
+      medical_certificates = @student.medical_certificates
       logs = @student.logs.where(flag: false)
-      if logs && medical_certificates
+      if logs.any? && medical_certificates.any?
         logs.each do |log|
           if log.date.between?(medical_certificates.from, medical_certificates.till)
             flash.now[:leaves] += 2
@@ -90,7 +100,6 @@ class StudentsController < ApplicationController
     def set_absences
       flash.now[:total] = 0
       @absences = @student.absences.joins(:lesson).order("lessons.name")
-      set_leaves
       @absences.each do |a|
         flash.now[:total] += a.amount
       end

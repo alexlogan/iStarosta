@@ -2,6 +2,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resources :groups, only: [:index, :show, :edit, :update] do
+    resources :students
+    resources :lessons
+  end
+
   resources :students do
     resources :medical_certificates
   end
@@ -10,7 +15,7 @@ Rails.application.routes.draw do
     resources :logs, param: :date
   end
 
-  root 'lessons#index'
+  root 'groups#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

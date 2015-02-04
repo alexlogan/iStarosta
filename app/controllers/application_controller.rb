@@ -6,11 +6,15 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) do |u|
-      u.permit(:email, :name, :password, :password_confirmation, group_attributes: [:name])
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_up) do |u|
+        u.permit(:email, :name, :password, :password_confirmation, group_attributes: [:name])
+      end
+      devise_parameter_sanitizer.for(:account_update) << :name
     end
-    devise_parameter_sanitizer.for(:account_update) << :name
-  end
+
+    def after_sign_in_path_for(resource)
+      group_path(current_user.group)
+    end
 
 end

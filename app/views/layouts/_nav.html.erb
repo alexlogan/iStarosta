@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs" xmlns="http://www.w3.org/1999/html">
+  <%= tag("li", role: "presentation", class: controller_name=="groups"? "active" : "" )%>
+  <%= link_to 'Group info', group_path(session[:group_id]) %>
+  <%= tag("li", role: "presentation", class: controller_name=="lessons"? "active" : "" )%>
+  <%= link_to 'Lessons', group_lessons_path(session[:group_id]) %>
+  <%= tag("li", role: "presentation", class: controller_name=="students"? "active" : "" )%>
+  <%= link_to 'Students', group_students_path(session[:group_id]) %>
+</ul>

@@ -1,4 +1,5 @@
 class MedicalCertificatesController < ApplicationController
+  before_filter :authenticate_user!
   before_action :set_student
   before_action :set_medical_certificate, only: [:show, :edit, :update, :destroy]
 

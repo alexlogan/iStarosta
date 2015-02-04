@@ -1,4 +1,7 @@
 class LogsController < ApplicationController
+  before_filter :authenticate_user!, except: :index
+  before_action :set_group
+  before_action :check_students, only: [:new, :create]
   before_action :set_log, only: [:show, :edit, :update, :destroy]
   before_action :check_lesson_id
 
@@ -6,7 +9,7 @@ class LogsController < ApplicationController
   # GET /logs
   # GET /logs.json
   def index
-    logs = Log.includes(:student).where(lesson_id: params[:lesson_id]).order(:date)
+    logs = Log.joins(:student).where(lesson_id: params[:lesson_id]).order(:date)
     @grid = PivotTable::Grid.new do |g|
       g.source_data = logs
       g.column_name = :date
@@ -15,7 +18,7 @@ class LogsController < ApplicationController
     end
     @grid.build
     @medical_certificates = MedicalCertificate.all
-    # render json: @grid.row_headers
+    # render json: @medical_certificates
   end
 
   # GET /logs/1
@@ -25,14 +28,13 @@ class LogsController < ApplicationController
 
   # GET /logs/new
   def new
-    @students = Student.all.order(:name)
+    @students = @group.students.all.order(:name)
     @log = Log.new
-    #@logs = Array.new(@students.count) {Log.new}
   end
 
   # GET /logs/1/edit
   def edit
-    @students = Student.all.order(:name).to_a
+    @students = @group.students.all.order(:name).to_a
     @log.to_a
   end
 
@@ -81,10 +83,20 @@ class LogsController < ApplicationController
   end
 
   private
+    def set_group
+      @group = Lesson.find(params[:lesson_id]).group
+    end
+
     def check_lesson_id(id = params[:lesson_id])
       unless Lesson.exists?(id: id)
         flash[:danger] = 'Lesson with this id does not exist'
         redirect_to controller: :lessons, action: :index
+      end
+    end
+
+    def check_students
+      if @group.students.blank?
+        redirect_to lesson_logs_path, flash: {danger: 'Add students at first.' }
       end
     end
 

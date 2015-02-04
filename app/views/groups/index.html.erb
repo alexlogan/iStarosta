@@ -1,0 +1,26 @@
+<div class="page-header">
+  <h1>Listing Groups</h1>
+</div>
+
+<% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
+<% end -%>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @groups.each do |group| %>
+      <tr>
+        <td><%= group.name %></td>
+        <td><%= link_to 'Show', group %></td>
+        <td><%= link_to 'Edit', edit_group_path(group) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

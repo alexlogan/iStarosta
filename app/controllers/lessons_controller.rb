@@ -1,10 +1,12 @@
 class LessonsController < ApplicationController
+  before_filter :authenticate_user!, except: :index
+  before_action :set_group
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
 
   # GET /lessons
   # GET /lessons.json
   def index
-    @lessons = Lesson.all
+    @lessons = @group.lessons.all
   end
 
   # GET /lessons/1
@@ -14,7 +16,7 @@ class LessonsController < ApplicationController
 
   # GET /lessons/new
   def new
-    @lesson = Lesson.new
+    @lesson = @group.lessons.build
   end
 
   # GET /lessons/1/edit
@@ -24,7 +26,7 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
-    @lesson = Lesson.new(lesson_params)
+    @lesson = @group.lessons.build(lesson_params)
 
     respond_to do |format|
       if @lesson.save
@@ -62,10 +64,18 @@ class LessonsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_group
+      if session[:group_id].blank?
+        redirect_to groups_path, flash: {danger: 'Select group at fist.' }
+      else
+        @group = Group.find(session[:group_id])
+      end
+    end
+
+  # Use callbacks to share common setup or constraints between actions.
     def set_lesson
-      if Lesson.exists?(id: params[:id])
-        @lesson = Lesson.find(params[:id])
+      if @group.lessons.exists?(id: params[:id])
+        @lesson = @group.lessons.find(params[:id])
       else
         flash[:danger] = 'Lesson with this id does not exist'
         redirect_to lessons_path
