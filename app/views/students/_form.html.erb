@@ -7,7 +7,7 @@
       <%= f.input :name, placeholder: "Имя студента" %>
     <div class="form-group">
       <%= f.button :submit %>
-      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+      <%= link_to 'Назад', student_path(@student), class: "btn btn-default" %>
     </div>
   <% end %>
 </div>

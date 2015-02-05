@@ -1,0 +1,25 @@
+<%= form_tag({action: "create"},class: "form-horizontal") do %>
+    <div class="form-group">
+      <% @students.each do |student| %>
+          <a class="btn btn-default btn-lg btn-block">
+            <%= student.name %>
+            <%= hidden_field_tag("log[flag][#{student.id}]", 0) %>
+          </a>
+      <% end %>
+    </div>
+
+    <%= hidden_field_tag("log[lesson_id]", params[:lesson_id]) %>
+
+    <div class="form-group">
+      <div class="input-group date">
+        <%= text_field_tag("log[date]", Date.today, {class: "form-control"} ) %>
+        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= submit_tag "Добавить", class: "btn btn-primary" %>
+      <%= link_to 'Назад', lesson_logs_path(params[:lesson_id]), class: "btn btn-default" %>
+    </div>
+
+<% end %>

@@ -28,7 +28,7 @@
     <div class="form-group">
       <%= submit_tag "Сохранить", class: "btn btn-primary" %>
       <%= link_to 'Удалить', lesson_log_path, class: "btn btn-danger", method: :delete, data: { confirm: 'Вы уверены?' } %>
-      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+      <%= link_to 'Назад', lesson_logs_path(params[:lesson_id]), class: "btn btn-default" %>
     </div>
 
 <% end %>

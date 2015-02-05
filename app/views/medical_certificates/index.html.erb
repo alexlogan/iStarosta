@@ -1,7 +1,7 @@
 <% title "#{@student.name} - Справки" %>
 
 <%= link_to 'Добавить справку', new_student_medical_certificate_path, class: "btn btn-success" %>
-<%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+<%= link_to 'Назад', student_path(@student), class: "btn btn-default" %>
 <br><br>
 <table class="table table-responsive">
   <thead>

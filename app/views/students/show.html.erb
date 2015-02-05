@@ -1,6 +1,6 @@
 <% title "Информация о студенте" %>
 <div class="btn-group" role="group" aria-label="...">
-  <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+  <%= link_to 'Назад', students_path, class: "btn btn-default" %>
   <%= link_to 'Изменить', edit_student_path(@student), class: "btn btn-primary" %>
   <%= link_to 'Справки', student_medical_certificates_path(@student), class: "btn btn-success" %>
 </div>
