@@ -86,12 +86,12 @@ class StudentsController < ApplicationController
 
     def set_leaves
       flash.now[:leaves] = 0
-      medical_certificates = @student.medical_certificates
+      medical_certificates = @student.medical_certificates.all
       logs = @student.logs.where(flag: false)
       if logs.any? && medical_certificates.any?
         logs.each do |log|
-          if log.date.between?(medical_certificates.from, medical_certificates.till)
-            flash.now[:leaves] += 2
+          medical_certificates.each do |mc|
+            flash.now[:leaves] += 2 if log.date.between?(mc.from, mc.till)
           end
         end
       end
