@@ -17,8 +17,6 @@ class LogsController < ApplicationController
       g.value_name = :flag
     end
     @grid.build
-    @medical_certificates = MedicalCertificate.all
-    # render json: @medical_certificates
   end
 
   # GET /logs/1
@@ -88,7 +86,9 @@ class LogsController < ApplicationController
     end
 
     def check_lesson_id(id = params[:lesson_id])
-      unless Lesson.exists?(id: id)
+      if Lesson.exists?(id: id)
+        flash.now[:lesson_name] = Lesson.find(id).name
+      else
         flash[:danger] = 'Lesson with this id does not exist'
         redirect_to controller: :lessons, action: :index
       end

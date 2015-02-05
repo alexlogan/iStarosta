@@ -25,12 +25,12 @@
             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li class="divider"></li>
-            <li><a href="#"><%= link_to 'Log out', destroy_user_session_path, method: :delete %></a></li>
+            <li><a href="#"><%= link_to 'Выход', destroy_user_session_path, method: :delete %></a></li>
           </ul>
         </li>
         <% else %>
-        <li><%= link_to 'Sign up', new_user_registration_path %></li>
-        <li><%= link_to 'Log in', new_user_session_path %></li>
+        <li><%= link_to 'Регистрация', new_user_registration_path %></li>
+        <li><%= link_to 'Вход', new_user_session_path %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

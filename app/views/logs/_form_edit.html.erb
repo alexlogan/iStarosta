@@ -1,0 +1,34 @@
+<%= form_tag(lesson_log_path(params[:lesson_id], @log[0].date), class: "form-horizontal") do %>
+    <%= hidden_field_tag :_method, :patch %>
+    <div class="form-group">
+      <% @students.each_with_index do |student, index| %>
+          <% if @log[index] and @log[index].flag %>
+              <a class="btn btn-primary active btn-lg btn-block">
+                <%= student.name %>
+                <%= hidden_field_tag("log[flag][#{student.id}]", 1) %>
+              </a>
+          <% else %>
+              <a class="btn btn-default btn-lg btn-block">
+                <%= student.name %>
+                <%= hidden_field_tag("log[flag][#{student.id}]", 0) %>
+              </a>
+          <% end %>
+      <% end %>
+    </div>
+
+    <%= hidden_field_tag("log[lesson_id]", params[:lesson_id]) %>
+
+    <div class="form-group">
+      <div class="input-group date">
+        <%= text_field_tag("log[date]", @log[0].date, {class: "form-control"} ) %>
+        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= submit_tag "Сохранить", class: "btn btn-primary" %>
+      <%= link_to 'Удалить', lesson_log_path, class: "btn btn-danger", method: :delete, data: { confirm: 'Вы уверены?' } %>
+      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+    </div>
+
+<% end %>

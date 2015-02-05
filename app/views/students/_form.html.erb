@@ -4,10 +4,10 @@
 
       <%= f.error_notification %>
 
-      <%= f.input :name, placeholder: "Enter student name" %>
+      <%= f.input :name, placeholder: "Имя студента" %>
     <div class="form-group">
       <%= f.button :submit %>
-      <%= link_to 'Back', @student.new_record? ? students_path : student_path, class: "btn btn-default" %>
+      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
     </div>
   <% end %>
 </div>

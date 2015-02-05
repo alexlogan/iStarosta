@@ -1,18 +1,23 @@
-<div class="page-header">
-  <h1>Student info</h1>
-</div>
+<% title "Информация о студенте" %>
 <div class="btn-group" role="group" aria-label="...">
-  <%= link_to 'Back', students_path, class: "btn btn-default" %>
-  <%= link_to 'Edit', edit_student_path(@student), class: "btn btn-primary" %>
+  <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
+  <%= link_to 'Изменить', edit_student_path(@student), class: "btn btn-primary" %>
   <%= link_to 'Справки', student_medical_certificates_path(@student), class: "btn btn-success" %>
 </div>
   <br> <br>
 <div class="panel panel-default">
   <div class="panel-heading"><b>Студент</b></div>
-  <div class="panel-body">
-    <ul class=""></ul>
-    <%= @student.name %>
-  </div>
+    <table class="table table-bordered">
+      <tr>
+        <th>ФИО</th>
+        <td><%= @student.name %></td>
+      </tr>
+      <tr>
+        <th>Группа</th>
+        <td><%= @student.group.name %></td>
+      </tr>
+    </table>
+
   <div class="panel-footer"><b>Пропуски</b></div>
     <table class="table table-bordered">
       <tr>

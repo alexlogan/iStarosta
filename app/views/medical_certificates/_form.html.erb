@@ -1,11 +1,4 @@
 <%= form_for([@student, @medical_certificate], html: {class: "form-horizontal"}) do |f| %>
-    <% if @medical_certificate.errors.any? %>
-        <div id="error_explanation">
-          <% @medical_certificate.errors.full_messages.each do |message| %>
-              <%= content_tag :div, message, class: "alert alert-danger"%>
-          <% end %>
-        </div>
-    <% end %>
 
   <div class="container">
     <div class="form-group">
@@ -18,7 +11,7 @@
     </div>
     <div class="form-group">
       <%= f.submit class: "btn btn-primary" %>
-      <%= link_to 'Back', student_medical_certificates_path, class: "btn btn-default" %>
+      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
     </div>
 
   </div>

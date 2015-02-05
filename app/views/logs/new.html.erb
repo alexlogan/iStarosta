@@ -1,6 +1,6 @@
-<div class="page-header">
-  <h1>New Log</h1>
-</div>
+<% title "#{@group.name} - #{flash[:lesson_name]} - Добавление" %>
+
+
 <%= form_tag({action: "create"},class: "form-horizontal") do %>
       <div class="form-group">
         <% @students.each do |student| %>
@@ -21,7 +21,7 @@
       </div>
 
       <div class="form-group">
-        <%= submit_tag "Create", class: "btn btn-primary" %>
+        <%= submit_tag "Добавить", class: "btn btn-primary" %>
       </div>
 
 <% end %>

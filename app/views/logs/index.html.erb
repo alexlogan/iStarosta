@@ -1,11 +1,8 @@
-<div class="page-header">
-  <h1>Listing Logs</h1>
-</div>
-<% flash.each do |name, msg| -%>
-    <%= content_tag :div, msg, class: "alert alert-#{name}"%>
-<% end -%>
+<% title "#{@group.name} - #{flash[:lesson_name]}" %>
 
-<%= link_to 'New Log', new_lesson_log_path, class: "btn btn-success" %>
+
+
+<%= link_to 'Добавить', new_lesson_log_path, class: "btn btn-success" %>
 <br/><br/>
 
 <table class="table table-responsive">
@@ -18,7 +15,7 @@
     </tr>
   </thead>
  <tbody>
- <% @grid.rows.each do |row| medical_certificates = @medical_certificates.where(student_id: row.header.id) %>
+ <% @grid.rows.each do |row| %>
      <tr>
        <th><%= link_to row.header.name, student_path(row.header) %></th>
        <% row.data.each do |data| leave = false %>

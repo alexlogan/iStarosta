@@ -3,11 +3,11 @@
 
       <%= f.error_notification %>
 
-      <%= f.input :name, placeholder: 'Enter lesson name' %>
+      <%= f.input :name, placeholder: 'Введите название' %>
 
     <div class="form-group">
       <%= f.button :submit %>
-      <%= link_to 'Back', lessons_path, class: "btn btn-default" %>
+      <%= link_to 'Назад', _back_url, class: "btn btn-default" %>
     </div>
 
 <% end %>
