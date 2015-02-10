@@ -14,11 +14,11 @@
 ActiveRecord::Schema.define(version: 20150202160149) do
 
   create_table "absences", force: :cascade do |t|
-    t.integer  "student_id", limit: 4, null: false
-    t.integer  "lesson_id",  limit: 4, null: false
-    t.integer  "amount",     limit: 4, null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "student_id", limit: 4,             null: false
+    t.integer  "lesson_id",  limit: 4,             null: false
+    t.integer  "amount",     limit: 4, default: 0, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20150202160149) do
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
     t.string   "name",                   limit: 255,              null: false
+    t.string   "role",                   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

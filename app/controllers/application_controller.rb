@@ -4,6 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  rescue_from CanCan::AccessDenied, with: :access_denied
+
+
 
   protected
     def configure_permitted_parameters
@@ -17,4 +20,11 @@ class ApplicationController < ActionController::Base
       group_path(current_user.group)
     end
 
+    def access_denied exception
+      if user_signed_in?
+        redirect_to request.referer || groups_path, :alert => 'Access denied'
+      else
+        redirect_to new_user_session_path, :alert => exception.message
+      end
+    end
 end

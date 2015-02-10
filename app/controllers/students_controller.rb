@@ -1,14 +1,17 @@
 class StudentsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
   before_action :set_group
-  before_action :set_student, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource :through => :group
   before_action :set_leaves, only: :show
   before_action :set_absences, only: :show
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+      redirect_to group_students_path(@group), :alert => %Q(Couldn't find Student with this 'id')
+  end
 
   # GET /students
   # GET /students.json
   def index
-    @students = @group.students.all.order(:name)
+    @students = @students.order(:name)
   end
 
   # GET /students/1
@@ -18,7 +21,7 @@ class StudentsController < ApplicationController
 
   # GET /students/new
   def new
-    @student = @group.students.build
+    # @student = @group.students.build
   end
 
   # GET /students/1/edit
@@ -28,11 +31,11 @@ class StudentsController < ApplicationController
   # POST /students
   # POST /students.json
   def create
-    @student = @group.students.build(student_params)
+    # @student = @group.students.build(student_params)
 
     respond_to do |format|
       if @student.save
-        format.html { redirect_to @student, flash: {success: 'Student was successfully created.'} }
+        format.html { redirect_to  @student, notice: 'Student was successfully created.' }
         format.json { render :show, status: :created, location: @student }
       else
         format.html { render :new }
@@ -46,7 +49,7 @@ class StudentsController < ApplicationController
   def update
     respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to @student, flash: {success: 'Student was successfully updated.'} }
+        format.html { redirect_to @student, notice: 'Student was successfully updated.'}
         format.json { render :show, status: :ok, location: @student }
       else
         format.html { render :edit }
@@ -58,30 +61,35 @@ class StudentsController < ApplicationController
   # DELETE /students/1
   # DELETE /students/1.json
   def destroy
+    # byebug
+    # authorize!(params[:action], @student || Student)
     @student.destroy
+    # if can? :destroy, Student
+    #   redirect_to students_path, alert: 'Yaaa'
+    # end
     respond_to do |format|
-      format.html { redirect_to students_url, flash: {success: 'Student was successfully destroyed.' }}
+      format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    def set_group
-      if session[:group_id].blank?
-        redirect_to groups_path, flash: {danger: 'Select group at fist.' }
+    def set_student
+      if Student.exists?(id: params[:id])
+        @student = Student.find(params[:id])
       else
-        @group = Group.find(session[:group_id])
+        redirect_to students_path, alert: 'Student with this id does not exist'
       end
     end
 
-  # Use callbacks to share common setup or constraints between actions.
-    def set_student
-      if @group.students.exists?(id: params[:id])
-        @student = @group.students.find(params[:id])
+    def set_group
+      if session[:group_id].blank?
+        @group = Student.find(params[:id]).group
+        session[:group_id] = @group.id
       else
-        flash[:danger] = 'Student with this id does not exist'
-        redirect_to students_path
+        @group = Group.find(session[:group_id])
       end
+
     end
 
     def set_leaves

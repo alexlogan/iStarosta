@@ -11,17 +11,23 @@
 <%= render "layouts/header" %>
 
 
-<div class="col-md-7  col-md-offset-3  ">
-  <% if session[:group_id] %>
-  <%= render "layouts/nav" %>
-  <% end %>
-  <div class="page-header">
-    <h1><%= yield :title %></h1>
-  </div>
-  <% flash_messages flash %>
-  <%= yield :flash_messages %>
-  <%= yield %>
-</div>
+<div class="col-md-7  col-md-offset-3">
 
+  <% if session[:group_id] %>
+    <%= render "layouts/nav" %>
+  <% end %>
+
+  <div class="page-header">
+    <h3><%= yield :title %></h3>
+  </div>
+
+  <% flash.each do |name, msg| %>
+      <%=   content_tag :div, msg, :class => 'alert alert-danger' if msg.is_a?(String) && name==='alert' %>
+      <%=   content_tag :div, msg, :class => 'alert alert-success' if msg.is_a?(String) && name==='notice' %>
+  <% end %>
+
+  <%= yield %>
+
+</div>
 </body>
 </html>

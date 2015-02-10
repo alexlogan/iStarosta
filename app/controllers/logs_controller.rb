@@ -1,9 +1,12 @@
 class LogsController < ApplicationController
-  before_filter :authenticate_user!, except: :index
+  # before_filter :authenticate_user!, except: :index
+  before_action :check_lesson_id
+  load_and_authorize_resource :lesson
+  load_and_authorize_resource :through => :lesson
+  skip_load_and_authorize_resource :only => :index
   before_action :set_group
   before_action :check_students, only: [:new, :create]
   before_action :set_log, only: [:show, :edit, :update, :destroy]
-  before_action :check_lesson_id
 
 
   # GET /logs
@@ -27,7 +30,7 @@ class LogsController < ApplicationController
   # GET /logs/new
   def new
     @students = @group.students.all.order(:name)
-    @log = Log.new
+    # @log = @group.logs.build
   end
 
   # GET /logs/1/edit
@@ -48,7 +51,7 @@ class LogsController < ApplicationController
       @log.save
     end
 
-    redirect_to lesson_logs_path, flash: {success: 'Log was successfully created.' }
+    redirect_to lesson_logs_path, notice: 'Log was successfully created.'
   end
 
   # PATCH/PUT /logs/1
@@ -65,7 +68,7 @@ class LogsController < ApplicationController
       index+=1
     end
     # render json: @log
-    redirect_to lesson_logs_path, flash: {success: 'Log was successfully updated.' }
+    redirect_to lesson_logs_path, notice: 'Log was successfully updated.'
   end
 
   # DELETE /logs/1
@@ -75,28 +78,28 @@ class LogsController < ApplicationController
       log.destroy
     end
     respond_to do |format|
-      format.html { redirect_to lesson_logs_path, flash: {success: 'Log was successfully destroyed.' }}
+      format.html { redirect_to lesson_logs_path, notice: 'Log was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    def set_group
-      @group = Lesson.find(params[:lesson_id]).group
-    end
-
     def check_lesson_id(id = params[:lesson_id])
       if Lesson.exists?(id: id)
         flash.now[:lesson_name] = Lesson.find(id).name
       else
-        flash[:danger] = 'Lesson with this id does not exist'
-        redirect_to controller: :lessons, action: :index
+        redirect_to groups_path, alert: 'Lesson with this id does not exist'
       end
+    end
+
+    def set_group
+      @group = Lesson.find(params[:lesson_id]).group
+      session[:group_id] = @group.id
     end
 
     def check_students
       if @group.students.blank?
-        redirect_to lesson_logs_path, flash: {danger: 'Add students at first.' }
+        redirect_to lesson_logs_path, alert: 'Add students at first.'
       end
     end
 

@@ -2,9 +2,6 @@
 
   <% title 'iStarosta - Регистрация' %>
 
-  <% flash.each do |name, msg| %>
-      <%=   content_tag :div, msg, :class => 'alert alert-danger' if msg.is_a?(String) && name==='alert' %>
-  <% end %>
 <%= simple_form_for([resource, resource.with_group], as: resource_name, url: registration_path(resource_name), :html => {:class => 'form-horizontal' }) do |f| %>
   <%= f.error_notification %>
 

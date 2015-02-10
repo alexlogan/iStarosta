@@ -1,36 +1,36 @@
 class MedicalCertificatesController < ApplicationController
-  before_filter :authenticate_user!
-  before_action :set_student
-  before_action :set_medical_certificate, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource :student
+  load_and_authorize_resource :through => :student
 
-  # GET /medical_certificates
-  # GET /medical_certificates.json
-  def index
-    @medical_certificates = @student.medical_certificates
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    redirect_to group_students_path(@group), :alert => %Q(Couldn't find Lesson with this 'id')
   end
 
-  # GET /medical_certificates/1
-  # GET /medical_certificates/1.json
+  # GET students/:id/medical_certificates
+  # GET students/:id/medical_certificates.json
+  def index
+    @medical_certificates = @medical_certificates.order(:from)
+  end
+
+  # GET students/:id/medical_certificates/1
+  # GET students/:id/medical_certificates/1.json
   def show
   end
 
-  # GET /medical_certificates/new
+  # GET students/:id/medical_certificates/new
   def new
-    @medical_certificate = @student.medical_certificates.new
   end
 
-  # GET /medical_certificates/1/edit
+  # GET students/:id/medical_certificates/1/edit
   def edit
   end
 
-  # POST /medical_certificates
-  # POST /medical_certificates.json
+  # POST students/:id/medical_certificates
+  # POST students/:id/medical_certificates.json
   def create
-    @medical_certificate = @student.medical_certificates.new(medical_certificate_params)
-
     respond_to do |format|
       if @medical_certificate.save
-        format.html { redirect_to student_medical_certificates_path(@student), flash: {success: 'Medical certificate was successfully created.'} }
+        format.html { redirect_to student_medical_certificates_path(@student), notice: 'Medical certificate was successfully created.'}
         format.json { render :show, status: :created, location: @medical_certificate }
       else
         format.html { render :new }
@@ -39,12 +39,12 @@ class MedicalCertificatesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /medical_certificates/1
-  # PATCH/PUT /medical_certificates/1.json
+  # PATCH/PUT students/:id/medical_certificates/1
+  # PATCH/PUT students/:id/medical_certificates/1.json
   def update
     respond_to do |format|
       if @medical_certificate.update(medical_certificate_params)
-        format.html { redirect_to [@student, @medical_certificate], flash: {success: 'Medical certificate was successfully updated.'} }
+        format.html { redirect_to student_medical_certificates_path(@student), notice: 'Medical certificate was successfully updated.'}
         format.json { render :show, status: :ok, location: @medical_certificate }
       else
         format.html { render :edit }
@@ -53,12 +53,12 @@ class MedicalCertificatesController < ApplicationController
     end
   end
 
-  # DELETE /medical_certificates/1
-  # DELETE /medical_certificates/1.json
+  # DELETE students/:id/medical_certificates/1
+  # DELETE students/:id/medical_certificates/1.json
   def destroy
     @medical_certificate.destroy
     respond_to do |format|
-      format.html { redirect_to student_medical_certificates_path(@student), flash: {success: 'Medical certificate was successfully destroyed.'} }
+      format.html { redirect_to student_medical_certificates_path(@student), notice: 'Medical certificate was successfully destroyed.'}
       format.json { head :no_content }
     end
   end
@@ -68,8 +68,7 @@ class MedicalCertificatesController < ApplicationController
       if Student.exists?(id: params[:student_id])
         @student = Student.find(params[:student_id])
       else
-        flash[:danger] = 'Student with this id does not exist'
-        redirect_to students_path
+        redirect_to students_path, alert: 'Student with this id does not exist'
       end
     end
 

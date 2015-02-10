@@ -7,7 +7,8 @@
       <%= f.input :name, placeholder: "Имя студента" %>
     <div class="form-group">
       <%= f.button :submit %>
-      <%= link_to 'Назад', student_path(@student), class: "btn btn-default" %>
+      <%= link_to 'Назад', student_path(@student), class: "btn btn-default" if action_name==='edit' %>
+      <%= link_to 'Назад', students_path, class: "btn btn-default" if action_name==='new' %>
     </div>
   <% end %>
 </div>

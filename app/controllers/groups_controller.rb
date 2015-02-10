@@ -1,12 +1,16 @@
 class GroupsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_group, only: [:show, :edit, :update]
+  load_and_authorize_resource
+  # before_action :set_group, only: [:show, :edit, :update]
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    redirect_to groups_path, :alert => exception.message
+  end
 
   # GET /groups
   # GET /groups.json
   def index
     session[:group_id] = nil
-    @groups = Group.all
+    @groups = @groups.order(:name)
   end
 
   # GET /groups/1

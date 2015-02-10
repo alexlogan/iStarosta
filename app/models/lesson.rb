@@ -7,7 +7,7 @@ class Lesson < ActiveRecord::Base
   validates :name,
             presence:true,
             format: {
-              with: /\A[а-яА-Я0-9.\s]+/,
+              with: /\A[а-яА-Я0-9.\s]+\z/,
               message: "only allows letters, numbers and \".\""
             }
 

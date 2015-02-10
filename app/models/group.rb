@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
   validates :name, presence: true,
             uniqueness: true,
             format: {
-              with: /\A[а-яА-Я\s]+/,
-              message: "only allows letters"
+              with: /\A[A-ZА-Я0-9]+\z/,
+              message: "only allows letters and numbers, not whitespaces"
             }
 end
