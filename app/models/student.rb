@@ -10,7 +10,7 @@ class Student < ActiveRecord::Base
             presence:true,
             # uniqueness: true,
             format: {
-                with: /\A[а-яА-Я\s]+\z/,
+                with: /\A[a-zA-Zа-яА-Я.\s]+\z/,
                 message: "only allows letters"
             }
 
