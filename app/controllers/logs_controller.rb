@@ -12,7 +12,7 @@ class LogsController < ApplicationController
   # GET /logs
   # GET /logs.json
   def index
-    logs = Log.joins(:student).where(lesson_id: params[:lesson_id]).order('logs.date ASC', 'students.name ASC')
+    logs = Log.joins(:student).where(lesson_id: params[:lesson_id]).reorder('logs.date ASC', 'students.name ASC')
     @grid = PivotTable::Grid.new do |g|
       g.source_data = logs
       g.column_name = :date
