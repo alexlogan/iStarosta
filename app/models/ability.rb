@@ -7,8 +7,10 @@ class Ability
       can :read, :all
       cannot :read, MedicalCertificate
 
-      if user.role == 'admin'
-         can :manage, :all
+      if user.admin?
+        can :access, :rails_admin  
+        can :dashboard
+        can :manage, :all
       elsif user.group.present?
         can :manage, Group, :id => user.group.id
         can :manage, Lesson, :group => { :id => user.group.id }
