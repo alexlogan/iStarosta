@@ -1,18 +1,17 @@
 class LogsController < ApplicationController
-  # before_filter :authenticate_user!, except: :index
   before_action :check_lesson_id
+  before_action :check_students, only: [:new, :create]
   load_and_authorize_resource :lesson
   load_and_authorize_resource :through => :lesson
   skip_load_and_authorize_resource :only => :index
   before_action :set_group
-  before_action :check_students, only: [:new, :create]
   before_action :set_log, only: [:show, :edit, :update, :destroy]
 
 
   # GET /logs
   # GET /logs.json
   def index
-    logs = Log.joins(:student).where(lesson_id: params[:lesson_id]).order(:date, 'students.name')
+    logs = @lesson.logs.joins(:student).order(:date, 'students.name')
     @grid = PivotTable::Grid.new(:sort => false) do |g|
       g.source_data = logs
       g.column_name = :date
@@ -57,7 +56,6 @@ class LogsController < ApplicationController
   # PATCH/PUT /logs/1
   # PATCH/PUT /logs/1.json
   def update
-    # render json: log_params
     index = 0
     log_params[:flag].each do |key, value|
       @log[index].student_id = key.to_i
@@ -67,7 +65,6 @@ class LogsController < ApplicationController
       @log[index].save
       index+=1
     end
-    # render json: @log
     redirect_to lesson_logs_path, notice: 'Log was successfully updated.'
   end
 
@@ -93,7 +90,7 @@ class LogsController < ApplicationController
     end
 
     def set_group
-      @group = Lesson.find(params[:lesson_id]).group
+      @group = @lesson.group
       session[:group_id] = @group.id
     end
 
@@ -105,7 +102,7 @@ class LogsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
     def set_log
-      @log = Log.joins(:student).where(lesson_id: params[:lesson_id], date: params[:date]).order("students.name")
+      @log = @lesson.logs.joins(:student).where(date: params[:date]).order(:date, 'students.name')
     end
 
   # Never trust parameters from the scary internet, only allow the white list through.

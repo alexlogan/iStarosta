@@ -27,7 +27,8 @@
             <!--<li><a href="#">Another action</a></li>-->
             <!--<li><a href="#">Something else here</a></li>-->
             <!--<li class="divider"></li>-->
-            <li><a href="#"><%= link_to 'Выход', destroy_user_session_path, method: :delete %></a></li>
+            <li><%= link_to 'Настройки', edit_registration_path(current_user) %></li>
+            <li><%= link_to 'Выход', destroy_user_session_path, method: :delete %></li>
           </ul>
         </li>
         <% else %>

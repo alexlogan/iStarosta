@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_one :group
+  has_one :group, :autosave => true
   has_many :students, :through => :group
   has_many :lessons, :through => :group
   accepts_nested_attributes_for :group
