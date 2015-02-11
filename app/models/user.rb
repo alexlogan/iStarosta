@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
-  has_one :group, :autosave => true
+  has_one :group, :autosave => true, dependent: :destroy
   has_many :students, :through => :group
   has_many :lessons, :through => :group
   accepts_nested_attributes_for :group
+
+  before_create :add_admin_role, unless: Proc.new { User.exists? }
 
   validates :name, presence: true,
             format: {
@@ -25,6 +27,11 @@ class User < ActiveRecord::Base
 
   def admin?
     self.role == 'admin'
+  end
+
+  private
+  def add_admin_role
+    self.role = 'admin'
   end
 
 end
