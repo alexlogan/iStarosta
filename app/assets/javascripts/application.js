@@ -17,7 +17,8 @@
 //= require jquery-2.1.1.min
 //= require bootstrap-datepicker
 //= require app
-// require_tree .
+//= require google_analytics
+//= require_tree .
 //= require turbolinks
 
 

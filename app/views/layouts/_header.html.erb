@@ -26,7 +26,7 @@
             <li><%= link_to 'Настройки', edit_registration_path(current_user) %></li>
             <% if current_user.admin? %>
                 <li class="divider"></li>
-                <li><%= link_to 'Dashboard', rails_admin.dashboard_path %></li>
+                <li><%= link_to 'Dashboard', rails_admin.dashboard_path, :target => "_blank" %></li>
             <% end %>
             <li class="divider"></li>
             <li><%= link_to 'Выход', destroy_user_session_path, method: :delete %></li>
