@@ -1,10 +1,10 @@
 class LogsController < ApplicationController
   before_action :check_lesson_id
-  before_action :check_students, only: [:new, :create]
   load_and_authorize_resource :lesson
   load_and_authorize_resource :through => :lesson
   skip_load_and_authorize_resource :only => :index
   before_action :set_group
+  before_action :check_students, only: [:new, :create]
   before_action :set_log, only: [:show, :edit, :update, :destroy]
 
 
@@ -29,7 +29,6 @@ class LogsController < ApplicationController
   # GET /logs/new
   def new
     @students = @group.students.all.order(:name)
-    # @log = @group.logs.build
   end
 
   # GET /logs/1/edit
@@ -42,12 +41,12 @@ class LogsController < ApplicationController
   # POST /logs.json
   def create
     log_params[:flag].each do |key, value|
-      @log = Log.new
-      @log.student_id = key.to_i
-      @log.flag = value
-      @log.lesson_id = log_params[:lesson_id].to_i
-      @log.date = log_params[:date]
-      @log.save
+      log = Log.new
+      log.student_id = key.to_i
+      log.flag = value
+      log.lesson_id = log_params[:lesson_id].to_i
+      log.date = log_params[:date]
+      log.save
     end
 
     redirect_to lesson_logs_path, notice: 'Log was successfully created.'
@@ -58,11 +57,11 @@ class LogsController < ApplicationController
   def update
     index = 0
     log_params[:flag].each do |key, value|
-      @log[index].student_id = key.to_i
-      @log[index].flag = value
-      @log[index].lesson_id = log_params[:lesson_id].to_i
-      @log[index].date = log_params[:date]
-      @log[index].save
+      log[index].student_id = key.to_i
+      log[index].flag = value
+      log[index].lesson_id = log_params[:lesson_id].to_i
+      log[index].date = log_params[:date]
+      log[index].save
       index+=1
     end
     redirect_to lesson_logs_path, notice: 'Log was successfully updated.'
@@ -91,7 +90,6 @@ class LogsController < ApplicationController
 
     def set_group
       @group = @lesson.group
-      session[:group_id] = @group.id
     end
 
     def check_students

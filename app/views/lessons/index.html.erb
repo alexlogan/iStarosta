@@ -1,21 +1,30 @@
 <% title "#{@group.name} - Дисциплины" %>
 
 
-<%= link_to 'Новая дисциплина', new_lesson_path, class: "btn btn-success" %> <br/> <br/>
+<%= link_to 'Новая дисциплина', new_lesson_path, class: "btn btn-success" if can? :create, @group.lessons.build%> <br/> <br/>
 <table class="table table-responsive">
-    <% @lessons.each_with_index do |lesson, index| %>
+  <thead>
+  <tr>
+    <th>#</th>
+    <th class="text-center">Название</th>
+    <th class="text-center">Управление</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @lessons.each_with_index do |lesson, index| %>
       <tr>
         <th class="row"><%= index+1 %></th>
-        <th><%= link_to lesson.name, lesson_logs_path(lesson.id) %></th>
-        <td>
+        <th class="text-center"><%= link_to lesson.name, lesson_logs_path(lesson.id) %></th>
+        <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Посмотреть журнал', lesson_logs_path(lesson.id), class: "btn btn-success" %>
-            <%= link_to 'Изменить', edit_lesson_path(lesson), class: "btn btn-primary" %>
+            <%= link_to 'Изменить', edit_lesson_path(lesson), class: "btn btn-primary" if can? :update, lesson %>
             <%= link_to 'Удалить', lesson,
-                      method: :delete, data: { confirm: 'Вы уверены?' },
-                      class: "btn btn-danger" %>
+                        method: :delete, data: { confirm: 'Вы уверены?' },
+                        class: "btn btn-danger" if can? :destroy, lesson%>
           </div>
         </td>
       </tr>
-    <% end %>
+  <% end %>
+  </tbody>
 </table>

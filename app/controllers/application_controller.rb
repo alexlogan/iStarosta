@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, with: :access_denied
 
 
-
   protected
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:sign_up) do |u|
@@ -19,7 +18,7 @@ class ApplicationController < ActionController::Base
     end
 
     def after_sign_in_path_for(resource)
-      group_path(current_user.group)
+      group_lessons_path(current_user.group)
     end
 
     def access_denied exception
@@ -29,4 +28,5 @@ class ApplicationController < ActionController::Base
         redirect_to new_user_session_path, :alert => exception.message
       end
     end
+
 end

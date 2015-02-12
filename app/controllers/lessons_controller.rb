@@ -1,10 +1,8 @@
 class LessonsController < ApplicationController
+  before_action :check_group_id, if: Proc.new { params[:group_id] }
+  before_action :check_lesson_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
-
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-    redirect_to group_lessons_path(@group), :alert => %Q(Couldn't find Lesson with this 'id')
-  end
 
   # GET /lessons
   # GET /lessons.json
@@ -63,32 +61,19 @@ class LessonsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-    def set_lesson
-      if Lesson.exists?(id: params[:id])
-        @lesson = Lesson.find(params[:id])
-      else
-        redirect_to groups_path, alert: 'Lesson with this id does not exist'
-      end
+    def check_group_id
+      redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
+    end
+
+    def check_lesson_id
+      redirect_to groups_path, alert: %Q(Couldn't find Lesson with this 'id') unless Lesson.exists?(params[:id])
     end
 
     def set_group
-      if session[:group_id].blank?
-        @group = Lesson.find(params[:id]).group
-        session[:group_id] = @group.id
+      if action_name == 'index'
+        @group = (Group.find(params[:group_id]) if params[:group_id]) || current_user.try(:group) || raise(CanCan::AccessDenied)
       else
-        @group = Group.find(session[:group_id])
-      end
-    end
-
-    def set_group_for_index
-      if params[:group_id].present?
-        @group = Group.find(params[:group_id])
-        session[:group_id] = @group.id
-      elsif user_signed_in?
-        @group = current_user.group
-      else
-        redirect_to new_user_session_path, alert: 'You are not authorized'
+        @group = (Lesson.find(params[:id]).group if params[:id]) || current_user.try(:group)
       end
     end
 

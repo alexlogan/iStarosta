@@ -1,12 +1,10 @@
 class StudentsController < ApplicationController
+  before_action :check_group_id, if: Proc.new { params[:group_id] }
+  before_action :check_student_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
   before_action :set_leaves, only: :show
   before_action :set_absences, only: :show
-
-  rescue_from ActiveRecord::RecordNotFound do |exception|
-      redirect_to group_students_path(@group), :alert => %Q(Couldn't find Student with this 'id')
-  end
 
   # GET /students
   # GET /students.json
@@ -21,7 +19,6 @@ class StudentsController < ApplicationController
 
   # GET /students/new
   def new
-    # @student = @group.students.build
   end
 
   # GET /students/1/edit
@@ -31,8 +28,6 @@ class StudentsController < ApplicationController
   # POST /students
   # POST /students.json
   def create
-    # @student = @group.students.build(student_params)
-
     respond_to do |format|
       if @student.save
         format.html { redirect_to  @student, notice: 'Student was successfully created.' }
@@ -61,12 +56,7 @@ class StudentsController < ApplicationController
   # DELETE /students/1
   # DELETE /students/1.json
   def destroy
-    # byebug
-    # authorize!(params[:action], @student || Student)
     @student.destroy
-    # if can? :destroy, Student
-    #   redirect_to students_path, alert: 'Yaaa'
-    # end
     respond_to do |format|
       format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
       format.json { head :no_content }
@@ -74,23 +64,22 @@ class StudentsController < ApplicationController
   end
 
   private
-    def set_student
-      if Student.exists?(id: params[:id])
-        @student = Student.find(params[:id])
-      else
-        redirect_to students_path, alert: 'Student with this id does not exist'
-      end
+    def check_group_id
+      redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
     end
 
-    def set_group
-      if session[:group_id].blank?
-        @group = Student.find(params[:id]).group
-        session[:group_id] = @group.id
-      else
-        @group = Group.find(session[:group_id])
-      end
-
+    def check_student_id
+      redirect_to groups_path, alert: %Q(Couldn't find Student with this 'id') unless Lesson.exists?(params[:id])
     end
+
+
+  def set_group
+    if action_name == 'index'
+      @group = (Group.find(params[:group_id]) if params[:group_id]) || current_user.try(:group) || raise(CanCan::AccessDenied)
+    else
+      @group = (Student.find(params[:id]).group if params[:id]) || current_user.try(:group)
+    end
+  end
 
     def set_leaves
       flash.now[:leaves] = 0

@@ -9,14 +9,12 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    session[:group_id] = nil
     @groups = @groups.order(:name)
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
-    session[:group_id] = params[:id]
   end
 
   # GET /groups/1/edit
