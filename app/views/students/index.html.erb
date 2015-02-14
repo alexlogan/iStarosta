@@ -1,5 +1,5 @@
 <% title "#{@group.name} - Студенты" %>
-<%= link_to 'Добавить студента', new_student_path, class: "btn btn-success" if can? :create, @group.students.build %>
+<%= link_to 'Добавить студента', new_student_path, class: can?(:create, @group.students.build) ? "btn btn-success" : "btn btn-success disabled" %>
 <br/> <br/>
 
 <table class="table table-responsive">
@@ -20,10 +20,10 @@
         <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Подробно', student, class: "btn btn-success" %>
-            <%= link_to 'Изменить', edit_student_path(student), class: "btn btn-primary" if can? :update, student %>
+            <%= link_to 'Изменить', edit_student_path(student), class: can?(:update, student) ? "btn btn-primary" : "btn btn-primary disabled" %>
             <%= link_to 'Удалить', student, method: :delete,
                       data: { confirm: 'Вы уверены?' },
-                      class: "btn btn-danger" if can? :destroy, student %>
+                      class: can?(:destroy, student) ? "btn btn-danger" : "btn btn-danger disabled" %>
           </div>
         </td>
       </tr>

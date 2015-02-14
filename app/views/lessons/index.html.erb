@@ -1,7 +1,7 @@
 <% title "#{@group.name} - Дисциплины" %>
 
 
-<%= link_to 'Новая дисциплина', new_lesson_path, class: "btn btn-success" if can? :create, @group.lessons.build%> <br/> <br/>
+<%= link_to 'Новая дисциплина', new_lesson_path, class: can?(:create, @group.lessons.build) ? "btn btn-success" : "btn btn-success disabled" %> <br/> <br/>
 <table class="table table-responsive">
   <thead>
   <tr>
@@ -18,10 +18,10 @@
         <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Посмотреть журнал', lesson_logs_path(lesson.id), class: "btn btn-success" %>
-            <%= link_to 'Изменить', edit_lesson_path(lesson), class: "btn btn-primary" if can? :update, lesson %>
+            <%= link_to 'Изменить', edit_lesson_path(lesson), class: can?(:update, lesson) ? "btn btn-primary" : "btn btn-primary disabled" %>
             <%= link_to 'Удалить', lesson,
                         method: :delete, data: { confirm: 'Вы уверены?' },
-                        class: "btn btn-danger" if can? :destroy, lesson%>
+                        class: can?(:destroy, lesson) ? "btn btn-danger" : "btn btn-danger disabled"%>
           </div>
         </td>
       </tr>

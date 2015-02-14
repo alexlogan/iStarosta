@@ -1,8 +1,8 @@
 <% title "Информация о студенте" %>
 <div class="btn-group" role="group" aria-label="...">
   <%= link_to 'Назад', group_students_path(@group), class: "btn btn-default" %>
-  <%= link_to 'Изменить', edit_student_path(@student), class: "btn btn-primary" if can? :update, Student %>
-  <%= link_to 'Справки', student_medical_certificates_path(@student), class: "btn btn-success" if can? :read, MedicalCertificate %>
+  <%= link_to 'Изменить', edit_student_path(@student), class: can?(:update, @student) ? "btn btn-primary" : "btn btn-primary disabled" %>
+  <%= link_to 'Справки', student_medical_certificates_path(@student), class: can?(:read, MedicalCertificate) ? "btn btn-success" : "btn btn-success disabled" %>
 </div>
   <br> <br>
 <div class="panel panel-default">

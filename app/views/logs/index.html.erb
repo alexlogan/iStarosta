@@ -2,7 +2,7 @@
 
 
 
-<%= link_to 'Добавить', new_lesson_log_path, class: "btn btn-success" if can? :create, @lesson.logs.build %>
+<%= link_to 'Добавить', new_lesson_log_path, class: can?(:create, @lesson.logs.build) ? "btn btn-success" : "btn btn-success disabled" %>
 <br/><br/>
 
 <table class="table table-responsive">
