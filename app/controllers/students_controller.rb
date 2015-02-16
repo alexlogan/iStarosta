@@ -69,7 +69,7 @@ class StudentsController < ApplicationController
     end
 
     def check_student_id
-      redirect_to groups_path, alert: %Q(Couldn't find Student with this 'id') unless Lesson.exists?(params[:id])
+      redirect_to groups_path, alert: %Q(Couldn't find Student with this 'id') unless Student.exists?(params[:id])
     end
 
 
