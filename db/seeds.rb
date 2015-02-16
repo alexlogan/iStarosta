@@ -7,38 +7,38 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-User.delete_all
-Lesson.delete_all
+# Lesson.delete_all
 Student.delete_all
 
-user = User.create(
-  :email => '777alexlogan@gmail.com',
-  :name => 'Alex Morg',
-  :password => '123456',
-  :role => 'admin',
-  :group_attributes => {
-    :name => 'ВБИС32'
-  }
-)
+# user = User.create(
+#   :email => '777alexlogan@gmail.com',
+#   :name => 'Alex Morg',
+#   :password => '123456',
+#   :role => 'admin',
+#   :group_attributes => {
+#     :name => 'ВБИС32'
+#   }
+# )
 
-Lesson.create(:group_id => 1, :name => 'Базы данных')
-Lesson.create(:group_id => 1, :name => 'Информационные технологии')
-Lesson.create(:group_id => 1, :name => 'ООП')
+# Lesson.create(:group_id => 1, :name => 'Базы данных')
+# Lesson.create(:group_id => 1, :name => 'Информационные технологии')
+# Lesson.create(:group_id => 1, :name => 'ООП')
 
-10.times Student.create(:group_id => 1, :name => Faker::Name.name)
-
-user = User.create(
-  :email => '7777alexlogan@gmail.com',
-  :name => 'Alex',
-  :password => '123456',
-  :role => '',
-  :group_attributes => {
-    :name => 'ВБИС322'
-  }
-)
-
-Lesson.create(:group_id => 2, :name => 'Базы данных')
-Lesson.create(:group_id => 2, :name => 'Информационные технологии')
-Lesson.create(:group_id => 2, :name => 'ООП')
-
-10.times Student.create(:group_id => 2, :name => Faker::Name.name)
+Student.create(:group_id => 1, :name => 'Авраменко')
+Student.create(:group_id => 1, :name => 'Башкирцев')
+Student.create(:group_id => 1, :name => 'Боярчик')
+Student.create(:group_id => 1, :name => 'Джугнинова')
+Student.create(:group_id => 1, :name => 'Долгиев')
+Student.create(:group_id => 1, :name => 'Курдюбов')
+Student.create(:group_id => 1, :name => 'Моргунов')
+Student.create(:group_id => 1, :name => 'Мурсалов')
+Student.create(:group_id => 1, :name => 'Савченко')
+Student.create(:group_id => 1, :name => 'Свинтицкий')
+Student.create(:group_id => 1, :name => 'Сеничев')
+Student.create(:group_id => 1, :name => 'Толкунов')
+Student.create(:group_id => 1, :name => 'Хачкиев')
+Student.create(:group_id => 1, :name => 'Хашагульгов')
+Student.create(:group_id => 1, :name => 'Христо')
+Student.create(:group_id => 1, :name => 'Шахов')
+Student.create(:group_id => 1, :name => 'Шелюх')
+Student.create(:group_id => 1, :name => 'Шпаков')

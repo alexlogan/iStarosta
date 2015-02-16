@@ -5,13 +5,14 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name=viewport content="width=600">
 </head>
 <body>
 
 <%= render "layouts/header" %>
 
 
-<div class="col-md-7  col-md-offset-3">
+<div class="col-md-7 col-md-offset-3 col-sm-12">
 
   <% if @group.present? %>
     <%= render "layouts/nav" %>

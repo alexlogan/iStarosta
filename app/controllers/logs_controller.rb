@@ -1,6 +1,7 @@
 class LogsController < ApplicationController
   before_action :check_lesson_id
   load_and_authorize_resource :lesson
+  before_action :check_logs_date, if: Proc.new { params[:date] }
   load_and_authorize_resource :through => :lesson
   skip_load_and_authorize_resource :only => :index
   before_action :set_group
@@ -81,14 +82,18 @@ class LogsController < ApplicationController
 
   private
     def check_lesson_id(id = params[:lesson_id])
-      if Lesson.exists?(id: id)
-        flash.now[:lesson_name] = Lesson.find(id).name
-      else
+      unless Lesson.exists?(id: id)
         redirect_to groups_path, alert: 'Lesson with this id does not exist'
       end
     end
 
-    def set_group
+    def check_logs_date date = params[:date]
+      unless Log.exists?(date: date)
+        redirect_to lesson_logs_path(@lesson), alert: 'Logs with this date does not exist'
+      end
+    end
+
+  def set_group
       @group = @lesson.group
     end
 

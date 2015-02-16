@@ -1,8 +1,8 @@
 <ul class="nav nav-tabs nav-justified" xmlns="http://www.w3.org/1999/html">
-  <%= tag("li", role: "presentation", class: controller_name=="groups"? "active" : "" )%>
+  <%= tag("li", role: "presentation", class: controller_name == "groups"? "active" : "" )%>
   <%= link_to 'Группа', group_path(@group) %>
-  <%= tag("li", role: "presentation", class: controller_name=="lessons"? "active" : "" )%>
+  <%= tag("li", role: "presentation", class: controller_name == "lessons" || controller_name == "logs" ? "active" : "" )%>
   <%= link_to 'Дисциплины', group_lessons_path(@group) %>
-  <%= tag("li", role: "presentation", class: controller_name=="students"? "active" : "" )%>
+  <%= tag("li", role: "presentation", class: controller_name == "students" || controller_name == "medical_certificates" ? "active" : "" )%>
   <%= link_to 'Студенты', group_students_path(@group) %>
 </ul>

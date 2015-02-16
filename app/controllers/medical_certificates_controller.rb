@@ -1,9 +1,10 @@
 class MedicalCertificatesController < ApplicationController
+  before_action :set_group
   load_and_authorize_resource :student
   load_and_authorize_resource :through => :student
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    redirect_to group_students_path(@group), :alert => %Q(Couldn't find Lesson with this 'id')
+    redirect_to group_students_path(@group), :alert => %Q(Couldn't find Medical Certificate with this 'id')
   end
 
   # GET students/:id/medical_certificates
@@ -64,7 +65,11 @@ class MedicalCertificatesController < ApplicationController
   end
 
   private
-    def set_student
+  def set_group
+    @group = (Student.find(params[:student_id]).group if params[:student_id]) || current_user.try(:group)
+  end
+
+  def set_student
       if Student.exists?(id: params[:student_id])
         @student = Student.find(params[:student_id])
       else
