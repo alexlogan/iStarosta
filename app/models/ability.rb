@@ -17,6 +17,7 @@ class Ability
         can :manage, Student, :group => { :id => user.group.id }
         can :manage, Log, :lesson => { :group_id => user.group.id }
         can :manage, MedicalCertificate, :student => { :group_id => user.group.id }
+        cannot :import, [Log, Lesson]
       end
 
     # Define abilities for the passed in user here. For example:

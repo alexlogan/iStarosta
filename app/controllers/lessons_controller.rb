@@ -3,10 +3,15 @@ class LessonsController < ApplicationController
   before_action :check_lesson_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
+  before_action :check_uploaded_file, only: :import
 
   # GET /lessons
   # GET /lessons.json
   def index
+    respond_to do |format|
+      format.html
+      format.csv { send_data @group.logs.to_csv, filename: "Все ведомости.csv"}
+    end
   end
 
   # GET /lessons/1
@@ -60,25 +65,39 @@ class LessonsController < ApplicationController
     end
   end
 
+  def import
+    Log.import(params[:file])
+    redirect_to lessons_path, notice: 'Logs imported.'
+  end
+
   private
-    def check_group_id
-      redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
-    end
 
-    def check_lesson_id
-      redirect_to groups_path, alert: %Q(Couldn't find Lesson with this 'id') unless Lesson.exists?(params[:id])
+  def check_uploaded_file(file = params[:file])
+    if file.present?
+      redirect_to lessons_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
+    else
+      redirect_to lessons_path, alert: 'Файл не выбран'
     end
+  end
 
-    def set_group
-      if action_name == 'index'
-        @group = (Group.find(params[:group_id]) if params[:group_id]) || current_user.try(:group) || raise(CanCan::AccessDenied)
-      else
-        @group = (Lesson.find(params[:id]).group if params[:id]) || current_user.try(:group)
-      end
-    end
+  def check_group_id
+    redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
+  end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-    def lesson_params
-      params.require(:lesson).permit(:name)
+  def check_lesson_id
+    redirect_to groups_path, alert: %Q(Couldn't find Lesson with this 'id') unless Lesson.exists?(params[:id])
+  end
+
+  def set_group
+    if action_name == 'index'
+      @group = (Group.find(params[:group_id]) if params[:group_id]) || current_user.try(:group) || raise(CanCan::AccessDenied)
+    else
+      @group = (Lesson.find(params[:id]).group if params[:id]) || current_user.try(:group)
     end
+  end
+
+# Never trust parameters from the scary internet, only allow the white list through.
+  def lesson_params
+    params.require(:lesson).permit(:name)
+  end
 end

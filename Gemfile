@@ -36,6 +36,8 @@ gem 'pivot_table'
 
 gem 'simple_form'
 
+gem 'smarter_csv'
+
 # paginator kaminari
 # gem 'kaminari'
 

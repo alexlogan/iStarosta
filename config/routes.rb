@@ -14,7 +14,10 @@ Rails.application.routes.draw do
   end
 
   resources :lessons do
-    resources :logs, param: :date
+    collection { post :import}
+    resources :logs, param: :date do
+      collection { post :import}
+    end
   end
 
   root 'groups#index'

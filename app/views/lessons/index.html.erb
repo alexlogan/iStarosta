@@ -1,7 +1,19 @@
 <% title "#{@group.name} - Дисциплины" %>
 
-
-<%= link_to 'Новая дисциплина', new_lesson_path, class: can?(:create, @group.lessons.build) ? "btn btn-success" : "btn btn-success disabled" %> <br/> <br/>
+<div class="container-fluid">
+  <%= link_to 'Новая дисциплина', new_lesson_path, class: can?(:create, @group.lessons.build) ? "btn btn-success pull-left" : "btn btn-success disabled pull-left" %>
+  <div class="dropdown pull-right">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      Экспорт всех ведомостей
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+      <li role="presentation"><%= link_to 'CSV', lessons_path(format: 'csv'), role: "menuitem", tabindex: "-1" %></li>
+      <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Excel</a></li>-->
+    </ul>
+  </div>
+</div>
+<br/>
 <table class="table table-responsive">
   <thead>
   <tr>
@@ -28,3 +40,15 @@
   <% end %>
   </tbody>
 </table>
+
+<div class="container-fluid well well-sm">
+  <%= form_tag import_lessons_path, class: "form-inline", multipart: true do %>
+      <div class="form-group">
+        <%= label_tag :file, 'Импортировать данные' %>
+      </div>
+      <div class="form-group">
+        <%= file_field_tag :file, accept: '.csv'%>
+      </div>
+      <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+  <% end %>
+</div>
