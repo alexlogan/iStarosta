@@ -3,18 +3,36 @@ class Lesson < ActiveRecord::Base
   has_many :logs, dependent: :delete_all
   has_many :absence, dependent: :delete_all
 
-  after_save :create_absence
-  validates :name,
-            presence:true,
-            format: {
-              with: /\A[a-zA-Zа-яА-Я0-9.\s]+\z/,
-              message: "only allows letters, numbers and \".\""
-            }
+  validates :name, presence:true
+  after_create :create_absence
+  before_save :add_type_to_name,
+              if: Proc.new{|lesson| lesson.kind_changed?}
+
+  enum kind: [:Лекция, :Практика]
 
   private
   def create_absence
     group.students.all.each do |student|
-      Absence.create({student_id: student.id, lesson_id: self.id, amount: 0})
+      self.absence.create({student_id: student.id, amount: 0})
+    end
+  end
+
+  def add_type_to_name
+    case self.kind
+      when 'Лекция'
+        if self.name.scan("(пр)").present?
+          self.name.gsub!("(пр)", "(лек)")
+        else
+          self.name=name+" (лек)"
+        end
+      when 'Практика'
+        if self.name.scan("(лек)").present?
+          self.name.gsub!("(лек)", "(пр)")
+        else
+          self.name=name+" (пр)"
+        end
+      else
+        self.name=name+" (!!!)"
     end
   end
 end

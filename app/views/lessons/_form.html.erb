@@ -5,6 +5,9 @@
 
       <%= f.input :name, placeholder: 'Введите название' %>
 
+
+      <%= f.input :kind, as: :radio_buttons, :collection => Lesson.kinds.keys %>
+
     <div class="form-group">
       <%= f.button :submit %>
       <%= link_to 'Назад', lessons_path, class: "btn btn-default" %>
