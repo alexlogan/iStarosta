@@ -8,6 +8,7 @@ class LessonsController < ApplicationController
   # GET /lessons
   # GET /lessons.json
   def index
+    @lessons = @lessons.order(:name)
     respond_to do |format|
       format.html
       format.csv { send_data @group.logs.to_csv, filename: "Все ведомости.csv"}
