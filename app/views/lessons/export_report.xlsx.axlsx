@@ -1,0 +1,27 @@
+wb = xlsx_package.workbook
+
+header = wb.styles.add_style :alignment => {
+                               :horizontal => :center,
+                               :vertical => :center ,
+                               :wrap_text => true,
+                               :textRotation => 90
+                             }
+
+
+wb.add_worksheet(name: "Report") do |sheet|
+  sheet.add_row  [''], style: header
+  @grid.column_headers.map { |lesson| sheet.rows.last.add_cell lesson.name}
+  sheet.rows.last.add_cell 'Пропущенно пар по справкам'
+  sheet.rows.last.add_cell 'Итого пропущенно пар'
+  sheet.rows.last.add_cell 'В часах'
+  sheet.row_style 0, header
+
+  @grid.rows.each do |row|
+    sheet.add_row [row.header.name]
+    row.data.map { |absence| sheet.rows.last.add_cell absence.amount}
+    sheet.rows.last.add_cell row.header.leaves/2
+    sheet.rows.last.add_cell (row.header.absences.sum(:amount)-row.header.leaves)/2
+    sheet.rows.last.add_cell row.header.absences.sum(:amount)-row.header.leaves
+  end
+  sheet.column_widths *([10]*sheet.column_info.count)
+end

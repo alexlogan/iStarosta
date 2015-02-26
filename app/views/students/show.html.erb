@@ -24,7 +24,7 @@
         <th>Предмет</th>
         <th>Часов пропусков</th>
       </tr>
-      <% @absences.each do |a| %>
+      <% @student.absences.each do |a| %>
         <tr>
           <td><%= link_to a.lesson.name, lesson_logs_path(a.lesson.id) %></td>
           <td><%= a.amount %></td>
@@ -35,15 +35,15 @@
       </tr>
       <tr>
         <td>Часов</td>
-        <td><%= flash[:total] %></td>
+        <td><%= @student.absences.sum(:amount) %></td>
       </tr>
       <tr>
         <td>По справкам</td>
-        <td><%= flash[:leaves] %></td>
+        <td><%= @student.leaves %></td>
       </tr>
       <tr>
         <td>Итого</td>
-        <td><%= flash[:total] - flash[:leaves] %></td>
+        <td><%= @student.absences.sum(:amount) - @student.leaves %></td>
       </tr>
     </table>
 </div>

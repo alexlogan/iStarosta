@@ -38,6 +38,8 @@ gem 'simple_form'
 
 gem 'smarter_csv'
 
+gem 'axlsx_rails'
+
 # paginator kaminari
 # gem 'kaminari'
 

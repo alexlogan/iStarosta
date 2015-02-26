@@ -9,7 +9,7 @@
     </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
       <li role="presentation"><%= link_to 'CSV', lessons_path(format: 'csv'), role: "menuitem", tabindex: "-1" %></li>
-      <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Excel</a></li>-->
+      <li role="presentation"><%= link_to 'Excel', export_report_lessons_path(format: 'xlsx'), method: :post, role: "menuitem", tabindex: "-1" %></li>
     </ul>
   </div>
 </div>
@@ -41,6 +41,7 @@
   </tbody>
 </table>
 
+<% if can?(:import, Lesson)%>
 <div class="container-fluid well well-sm">
   <%= form_tag import_lessons_path, class: "form-inline", multipart: true do %>
       <div class="form-group">
@@ -52,3 +53,4 @@
       <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
   <% end %>
 </div>
+<% end %>

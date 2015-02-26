@@ -66,6 +66,20 @@ class LessonsController < ApplicationController
     end
   end
 
+  def export_report
+    absences = Absence.all.joins(:student, :lesson).order('lessons.name', 'students.name')
+    @grid = PivotTable::Grid.new(:sort => false) do |g|
+      g.source_data = absences
+      g.column_name = :lesson
+      g.row_name = :student
+      g.value_name = :amount
+    end
+    @grid.build
+    respond_to do |format|
+      format.xlsx { render :xlsx => 'export_report', filename: "Отчет.xlsx"}
+    end
+  end
+
   def import
     Log.import(params[:file])
     redirect_to lessons_path, notice: 'Logs imported.'

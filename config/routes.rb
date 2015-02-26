@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :lessons do
     collection { post :import}
+    collection { post :export_report}
     resources :logs, param: :date do
       collection { post :import}
     end

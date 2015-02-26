@@ -3,8 +3,6 @@ class StudentsController < ApplicationController
   before_action :check_student_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
-  before_action :set_leaves, only: :show
-  before_action :set_absences, only: :show
 
   # GET /students
   # GET /students.json
@@ -81,26 +79,7 @@ class StudentsController < ApplicationController
     end
   end
 
-    def set_leaves
-      flash.now[:leaves] = 0
-      medical_certificates = @student.medical_certificates.all
-      logs = @student.logs.where(flag: false)
-      if logs.any? && medical_certificates.any?
-        logs.each do |log|
-          medical_certificates.each do |mc|
-            flash.now[:leaves] += 2 if log.date.between?(mc.from, mc.till)
-          end
-        end
-      end
-    end
 
-    def set_absences
-      flash.now[:total] = 0
-      @absences = @student.absences.joins(:lesson).order("lessons.name")
-      @absences.each do |a|
-        flash.now[:total] += a.amount
-      end
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params

@@ -4,15 +4,16 @@ class Student < ActiveRecord::Base
   has_many :logs, dependent: :delete_all
   has_many :absences, dependent: :delete_all
 
+  after_initialize :set_leaves
   after_create :create_absence
   after_create :create_logs
   validates :name,
             presence:true,
-            # uniqueness: true,
             format: {
                 with: /\A[a-zA-Zа-яА-Я.\s]+\z/,
                 message: "only allows letters"
             }
+  attr_accessor :leaves
 
   private
   def create_absence
@@ -35,7 +36,20 @@ class Student < ActiveRecord::Base
             })
         end
       end
-
     end
   end
+
+  def set_leaves
+    self.leaves = 0
+    medical_certificates = self.medical_certificates.all
+    logs = self.logs.where(flag: false)
+    if logs.any? && medical_certificates.any?
+      logs.each do |log|
+        medical_certificates.each do |mc|
+          self.leaves += 2 if log.date.between?(mc.from, mc.till)
+        end
+      end
+    end
+  end
+
 end
