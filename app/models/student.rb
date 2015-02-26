@@ -2,10 +2,9 @@ class Student < ActiveRecord::Base
   belongs_to :group
   has_many :medical_certificates, dependent: :destroy
   has_many :logs, dependent: :delete_all
-  has_many :absences, dependent: :delete_all
 
   after_initialize :set_leaves
-  after_create :create_absence
+  after_initialize :set_absences
   after_create :create_logs
   validates :name,
             presence:true,
@@ -13,14 +12,9 @@ class Student < ActiveRecord::Base
                 with: /\A[a-zA-Zа-яА-Я.\s]+\z/,
                 message: "only allows letters"
             }
-  attr_accessor :leaves
+  attr_accessor :leaves, :absences
 
   private
-  def create_absence
-    group.lessons.all.each do |lesson|
-      Absence.create({student_id: self.id, lesson_id: lesson.id, amount: 0})
-    end
-  end
 
   def create_logs
     if group.logs.any?
@@ -39,6 +33,11 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def set_absences
+    self.absences = Hash.new
+    self.group.lessons.all.order(:name).map { |lesson| self.absences[lesson.name.to_sym] = self.logs.where(flag: false, lesson_id: lesson).count }
+  end
+
   def set_leaves
     self.leaves = 0
     medical_certificates = self.medical_certificates.all
@@ -46,7 +45,7 @@ class Student < ActiveRecord::Base
     if logs.any? && medical_certificates.any?
       logs.each do |log|
         medical_certificates.each do |mc|
-          self.leaves += 2 if log.date.between?(mc.from, mc.till)
+          self.leaves += 1 if log.date.between?(mc.from, mc.till)
         end
       end
     end

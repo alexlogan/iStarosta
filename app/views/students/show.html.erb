@@ -22,28 +22,28 @@
     <table class="table table-bordered">
       <tr>
         <th>Предмет</th>
-        <th>Часов пропусков</th>
+        <th>Пар пропущено</th>
       </tr>
-      <% @student.absences.each do |a| %>
+      <% @student.absences.each do |key, value| %>
         <tr>
-          <td><%= link_to a.lesson.name, lesson_logs_path(a.lesson.id) %></td>
-          <td><%= a.amount %></td>
+          <td> <%= key %> </td>
+          <td><%= value %></td>
         </tr>
       <% end %>
       <tr>
         <th colspan="2">Отчет</th>
       </tr>
       <tr>
-        <td>Часов</td>
-        <td><%= @student.absences.sum(:amount) %></td>
+        <td>Всего</td>
+        <td><%= @student.absences.values.inject(:+) %></td>
       </tr>
       <tr>
         <td>По справкам</td>
         <td><%= @student.leaves %></td>
       </tr>
       <tr>
-        <td>Итого</td>
-        <td><%= @student.absences.sum(:amount) - @student.leaves %></td>
+        <td>Итого в часах</td>
+        <td><%= (@student.absences.values.inject(:+) - @student.leaves)*2 %></td>
       </tr>
     </table>
 </div>

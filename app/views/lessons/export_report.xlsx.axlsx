@@ -10,18 +10,18 @@ header = wb.styles.add_style :alignment => {
 
 wb.add_worksheet(name: "Report") do |sheet|
   sheet.add_row  [''], style: header
-  @grid.column_headers.map { |lesson| sheet.rows.last.add_cell lesson.name}
+  @lessons.map { |lesson| sheet.rows.last.add_cell lesson.name}
   sheet.rows.last.add_cell 'Пропущенно пар по справкам'
   sheet.rows.last.add_cell 'Итого пропущенно пар'
   sheet.rows.last.add_cell 'В часах'
   sheet.row_style 0, header
 
-  @grid.rows.each do |row|
-    sheet.add_row [row.header.name]
-    row.data.map { |absence| sheet.rows.last.add_cell absence.amount}
-    sheet.rows.last.add_cell row.header.leaves/2
-    sheet.rows.last.add_cell (row.header.absences.sum(:amount)-row.header.leaves)/2
-    sheet.rows.last.add_cell row.header.absences.sum(:amount)-row.header.leaves
+  @students.each do |student|
+    sheet.add_row [student.name]
+    student.absences.values.map { |value| sheet.rows.last.add_cell value}
+    sheet.rows.last.add_cell student.leaves
+    sheet.rows.last.add_cell student.absences.values.inject(:+) - student.leaves
+    sheet.rows.last.add_cell (student.absences.values.inject(:+) - student.leaves)*2
   end
   sheet.column_widths *([10]*sheet.column_info.count)
 end

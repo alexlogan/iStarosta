@@ -7,7 +7,7 @@
     <tr>
       <th>#</th>
       <th class="text-center">ФИО</th>
-      <th class="text-center">Часов пропусков</th>
+      <th class="text-center">Пар пропущено</th>
       <th class="text-center">Управление</th>
     </tr>
   </thead>
@@ -16,7 +16,7 @@
       <tr>
         <th scope="row"><%= index+1 %></th>
         <td class="text-center"><%= student.name %></td>
-        <td class="text-center"><span class="badge badge-low"><%= student.absences.sum(:amount) %></span></td>
+        <td class="text-center"><span class="badge badge-low"><%= student.absences.values.inject(:+) %></span></td>
         <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Подробно', student, class: "btn btn-success" %>

@@ -11,15 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219105908) do
-
-  create_table "absences", force: :cascade do |t|
-    t.integer  "student_id", limit: 4,             null: false
-    t.integer  "lesson_id",  limit: 4,             null: false
-    t.integer  "amount",     limit: 4, default: 0, null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-  end
+ActiveRecord::Schema.define(version: 20150226100055) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
