@@ -6,6 +6,8 @@ class Lesson < ActiveRecord::Base
   before_save :add_type_to_name,
               if: Proc.new{|lesson| lesson.kind_changed?}
 
+  after_initialize :set_attendance
+  attr_accessor :attendance
   enum kind: [:Лекция, :Практика]
 
   private
@@ -25,6 +27,12 @@ class Lesson < ActiveRecord::Base
         end
       else
         self.name=name+" (!!!)"
+    end
+  end
+
+  def set_attendance
+    if self.logs.any?
+      self.attendance = (self.logs.where(flag: true).count.to_f/self.logs.count.to_f*100).round
     end
   end
 
