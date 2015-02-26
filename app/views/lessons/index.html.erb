@@ -29,7 +29,7 @@
         <th class="text-center"><%= link_to lesson.name, lesson_logs_path(lesson.id) %></th>
         <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
-            <%= link_to 'Посмотреть журнал', lesson_logs_path(lesson.id), class: "btn btn-success" %>
+            <%= link_to 'Журнал', lesson_logs_path(lesson.id), class: "btn btn-success" %>
             <%= link_to 'Изменить', edit_lesson_path(lesson), class: can?(:update, lesson) ? "btn btn-primary" : "btn btn-primary disabled" %>
             <%= link_to 'Удалить', lesson,
                         method: :delete, data: { confirm: 'Вы уверены?' },
