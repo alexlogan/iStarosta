@@ -2,7 +2,9 @@
 
 
 <div class="container-fluid">
+  <div class="pull-left">
   <%= link_to 'Добавить', new_lesson_log_path, class: can?(:create, @lesson.logs.build) ? "btn btn-success" : "btn btn-success disabled" %>
+  </div>
   <div class="dropdown pull-right">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
         Экспорт

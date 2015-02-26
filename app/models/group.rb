@@ -8,6 +8,18 @@ class Group < ActiveRecord::Base
             uniqueness: true,
             format: {
               with: /\A[A-ZА-Я0-9]+\z/,
-              message: "only allows letters and numbers, not whitespaces"
+              message: "Только буквы и цифры без пробелов"
             }
+  after_initialize :set_attendance
+  after_initialize :set_total_pairs
+  attr_accessor :attendance, :total_pairs
+
+  private
+  def set_attendance
+    self.attendance = (self.logs.where(flag: true).count.to_f/self.logs.count.to_f*100).round
+  end
+
+  def set_total_pairs
+    self.total_pairs = self.logs.all.group(:lesson_id, :date).length
+  end
 end
