@@ -20,6 +20,6 @@ class Group < ActiveRecord::Base
   end
 
   def set_total_pairs
-    self.total_pairs = self.logs.all.group(:lesson_id, :date).length
+    self.total_pairs = self.logs.group(:lesson_id, :date).length
   end
 end
