@@ -1,6 +1,7 @@
 <% title "#{@group.name} - Студенты" %>
+<div class="container-fluid">
 <%= link_to 'Добавить студента', new_student_path, class: can?(:create, @group.students.build) ? "btn btn-success" : "btn btn-success disabled" %>
-<br/> <br/>
+</div> <br/>
 
 <table class="table table-responsive">
   <thead>
