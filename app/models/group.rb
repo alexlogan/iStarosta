@@ -16,7 +16,9 @@ class Group < ActiveRecord::Base
 
   private
   def set_attendance
-    self.attendance = (self.logs.where(flag: true).count.to_f/self.logs.count.to_f*100).round
+    if self.logs.any?
+      self.attendance = (self.logs.where(flag: true).count.to_f/self.logs.count.to_f*100).round
+    end
   end
 
   def set_total_pairs

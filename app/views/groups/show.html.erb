@@ -4,22 +4,22 @@
   <div class="progress-bar progress-bar-success" style="width: <%= @group.attendance %>%">
     <span class="sr-only"><%= @group.attendance %>%</span>
   </div>
-  <div class="progress-bar progress-bar-danger" style="width: <%= 100-@group.attendance %>%">
-    <span class="sr-only"><%= 100-@group.attendance %>%</span>
+  <div class="progress-bar progress-bar-danger" style="width: <%= 100-@group.attendance if @group.attendance.present? %>%">
+    <span class="sr-only"><%= 100-@group.attendance if @group.attendance.present? %>%</span>
   </div>
 </div>
 
-<h4>
-  <p><span class="glyphicon glyphicon-education" aria-hidden="true"></span>
-  &nbsp;&nbsp;Посещаемость&nbsp;&nbsp;<%= @group.attendance %>%</p>
+<div>
+  <div><h4><span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+    &nbsp;&nbsp;Посещаемость&nbsp;&nbsp;<%= @group.attendance %>%</h4></div>
 
-  <p><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
-    &nbsp;&nbsp;Количество пар&nbsp;&nbsp;<%= @group.total_pairs %></p>
+  <div><h4><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+    &nbsp;&nbsp;Количество пар&nbsp;&nbsp;<%= @group.total_pairs %></h4></div>
 
-  <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-  &nbsp;&nbsp;Студенты&nbsp;&nbsp;<%= @group.students.count %></p>
+  <div><h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+  &nbsp;&nbsp;Студенты&nbsp;&nbsp;<%= @group.students.count %></h4></div>
 
-  <p><span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-    &nbsp;&nbsp;Дисциплины&nbsp;&nbsp;<%= @group.lessons.count %></p>
+  <div><h4><span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    &nbsp;&nbsp;Дисциплины&nbsp;&nbsp;<%= @group.lessons.count %></h4></div>
 
-</h4>
+</div>
