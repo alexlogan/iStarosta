@@ -1,10 +1,9 @@
-<div class="col-md-5 col-sm-5 col-xs-7">
+<div class="col-md-7 col-sm-7 col-xs-12">
 <%= simple_form_for @lesson, html: {class: "form-horizontal"}, wrapper: :horizontal_form do |f| %>
 
       <%= f.error_notification %>
 
       <%= f.input :name, placeholder: 'Введите название' %>
-
 
       <%= f.input :kind, as: :radio_buttons, :collection => Lesson.kinds.keys %>
 
