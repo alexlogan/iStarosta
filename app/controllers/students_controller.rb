@@ -61,6 +61,11 @@ class StudentsController < ApplicationController
     end
   end
 
+  def import
+    Student.import(params[:file])
+    redirect_to students_path, notice: 'Students imported.'
+  end
+
   private
     def check_group_id
       redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])

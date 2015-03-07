@@ -33,16 +33,4 @@
   </tbody>
 </table>
 
-<% if can?(:import, Lesson)%>
-<div class="container-fluid well well-sm">
-  <%= form_tag import_path, class: "form-inline", multipart: true do %>
-      <div class="form-group">
-        <%= label_tag :file, 'Импортировать данные' %>
-      </div>
-      <div class="form-group">
-        <%= file_field_tag :file, accept: '.csv'%>
-      </div>
-      <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
-  <% end %>
-</div>
-<% end %>
+

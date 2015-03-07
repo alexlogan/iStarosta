@@ -1,6 +1,6 @@
 <% title 'Личный кабинет' %>
 
-<div class="panel panel-info">
+<div class="panel panel-primary">
 
   <div class="panel-heading"><b>Профиль</b></div>
 
@@ -17,16 +17,20 @@
         <%= @user.group.name %>
       </td>
     </tr>
+    <tr>
+      <td colspan="2">
+        <div class="text-center">
+          <%= link_to 'Редактировать профиль', edit_user_registration_path, class: 'btn btn-primary' %>
+        </div>
+      </td>
+    </tr>
   </table>
 
 </div>
 
-<div class="container">
-    <%= link_to 'Редактировать профиль', edit_user_registration_path, class: 'btn btn-primary' %>
-</div>
 
 <br/>
-<div class="panel panel-warning">
+<div class="panel panel-info">
   <div class="panel-heading"><b>Группа</b></div>
 
   <table class="table table-bordered">
@@ -48,18 +52,20 @@
         <%= @user.setting.threshold_date %>
       </td>
     </tr>
+    <tr>
+      <td colspan="2">
+        <div class="text-center">
+          <%= link_to 'Редактировать настройки группы', edit_group_setting_path, class: 'btn btn-primary' %>
+        </div>
+      </td>
+    </tr>
   </table>
 </div>
 
-<div class="container">
-  <%= link_to 'Редактировать настройки группы', edit_group_setting_path, class: 'btn btn-primary' %>
-</div>
 <br/>
-
 <div class="panel panel-success">
   <div class="panel-heading"><b>Отчеты</b></div>
   <div class="panel-body">
-
         <%#= form_tag :export, method: :post, format: :xlsx, class: "form-horizontal" do %>
 
         <!--<div class="form-group">-->
@@ -77,11 +83,20 @@
 
       <%# end %>
 
-      <button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#Download">
-        Скачать отчеты
-      </button>
+    <%= button_tag 'Скачать отчеты', data: {toggle: 'modal', target: '#Report'}, class: "btn btn-block btn-success" %>
 
+  </div>
+</div>
 
+<div class="panel panel-warning">
+  <div class="panel-heading"><b>Бекап</b></div>
+  <div class="panel-body">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <%= button_tag 'Экспорт', data: {toggle: 'modal', target: '#Export'}, class: "btn btn-sm btn-block btn-default" %>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <%= button_tag 'Импорт', data: {toggle: 'modal', target: '#Import'}, class: "btn btn-sm btn-block btn-default" %>
+    </div>
   </div>
 
 </div>
@@ -93,11 +108,8 @@
                   class: "btn btn-danger"%>
 </div>
 
-<!-- Button trigger modal -->
-
-
 <!-- Modal -->
-<div class="modal fade" id="Download" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="Report" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -111,21 +123,159 @@
           <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <%= form_tag :export, method: :post, class: "form-horizontal" do %>
-                  <%= hidden_field_tag :block, :first %>
+                  <%= hidden_field_tag "export[block]", :first %>
                   <%= submit_tag '1-й Блок', class: "btn btn-lg btn-block btn-primary" %>
               <% end %>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
               <%= form_tag :export, method: :post, class: "form-horizontal" do %>
-                  <%= hidden_field_tag :block, :second %>
+                  <%= hidden_field_tag "export[block]", :second %>
                   <%= submit_tag '2-й Блок', class: "btn btn-lg btn-block btn-primary" %>
               <% end %>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="Import" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Импорт</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="container-fluid">
+
+          <%= button_tag 'Логи',
+                         data: {
+                                toggle: 'collapse',
+                                target: '#collapseImportLogs'},
+                        aria: {
+                                expanded: 'false',
+                                controls: 'collapseImportLogs'},
+                        class: "btn btn-lg btn-block btn-primary" %>
+
+          <div class="collapse" id="collapseImportLogs">
+              <% if can?(:import, Log)%>
+                  <div class="container-fluid well well-sm">
+                    <%= form_tag import_logs_path, class: "form-inline", multipart: true do %>
+                        <div class="form-group">
+                          <%= label_tag :file, 'Импортировать логи' %>
+                        </div>
+                        <div class="form-group">
+                          <%= file_field_tag :file, accept: '.csv'%>
+                        </div>
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                    <% end %>
+                  </div>
+              <% end %>
+          </div>
           <br/>
+
+          <%= button_tag 'Дисциплины',
+                         data: {
+                                 toggle: 'collapse',
+                                 target: '#collapseImportLessons'},
+                         aria: {
+                                 expanded: 'false',
+                                 controls: 'collapseImportLessons'},
+                         class: "btn btn-lg btn-block btn-primary" %>
+
+          <div class="collapse" id="collapseImportLessons">
+              <% if can?(:import, Student)%>
+                  <div class="container-fluid well well-sm">
+                    <%= form_tag import_lessons_path, class: "form-inline", multipart: true do %>
+                        <div class="form-group">
+                          <%= label_tag :file, 'Импортировать дисциплины' %>
+                        </div>
+                        <div class="form-group">
+                          <%= file_field_tag :file, accept: '.csv'%>
+                        </div>
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                    <% end %>
+                  </div>
+              <% end %>
+          </div>
+          <br/>
+
+          <%= button_tag 'Студенты',
+                         data: {
+                                 toggle: 'collapse',
+                                 target: '#collapseImportStudents'},
+                         aria: {
+                                 expanded: 'false',
+                                 controls: 'collapseImportStudents'},
+                         class: "btn btn-lg btn-block btn-primary" %>
+
+          <div class="collapse" id="collapseImportStudents">
+              <% if can?(:import, Lesson)%>
+                  <div class="container-fluid well well-sm">
+                    <%= form_tag import_students_path, class: "form-inline", multipart: true do %>
+                        <div class="form-group">
+                          <%= label_tag :file, 'Импортировать студентов' %>
+                        </div>
+                        <div class="form-group">
+                          <%= file_field_tag :file, accept: '.csv'%>
+                        </div>
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-primary' %>
+                    <% end %>
+                  </div>
+              <% end %>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="Export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Экспорт</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="container-fluid">
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <%= button_to 'Все логи', export_path(format: 'csv'), class: "btn btn-lg btn-block btn-primary" %>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :logs %>
+                  <%= submit_tag 'Логи', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :lessons %>
+                  <%= submit_tag 'Дисциплины', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :students %>
+                  <%= submit_tag 'Студенты', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
             </div>
           </div>
         </div>
