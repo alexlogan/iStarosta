@@ -1,15 +1,11 @@
 wb = xlsx_package.workbook
 
-first_block_total = 0
-second_block_total = 0
-
 header = wb.styles.add_style :alignment => {
                                :horizontal => :center,
                                :vertical => :center ,
                                :wrap_text => true,
                                :textRotation => 90
                              }
-
 
 wb.add_worksheet(name: "Report") do |sheet|
   sheet.add_row  [''], style: header
@@ -21,6 +17,8 @@ wb.add_worksheet(name: "Report") do |sheet|
 
 
   @students.each do |student|
+    first_block_total = 0
+    second_block_total = 0
     sheet.add_row [student.name]
       if flash.now[:block]=='first'
         student.absences.values.each do |value|
