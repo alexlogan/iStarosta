@@ -10,7 +10,7 @@ class MedicalCertificatesController < ApplicationController
   # GET students/:id/medical_certificates
   # GET students/:id/medical_certificates.json
   def index
-    @medical_certificates = @medical_certificates.order(:from)
+    @medical_certificates = @medical_certificates.where(semester: @group.setting.current_semester).order(:from)
   end
 
   # GET students/:id/medical_certificates/1

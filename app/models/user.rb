@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_one :group, :autosave => true, dependent: :destroy
+  has_one :setting, :through => :group, dependent: :destroy
   has_many :students, :through => :group
   has_many :lessons, :through => :group
   accepts_nested_attributes_for :group

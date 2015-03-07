@@ -13,6 +13,7 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.json
   def show
+    render json: @student.absences
   end
 
   # GET /students/new

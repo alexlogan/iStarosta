@@ -47,10 +47,9 @@ class LogsController < ApplicationController
   # POST /lesson/:id/logs.json
   def create
     log_params[:flag].each do |key, value|
-      log = Log.new
+      log = @lesson.logs.new
       log.student_id = key.to_i
       log.flag = value
-      log.lesson_id = log_params[:lesson_id].to_i
       log.date = log_params[:date]
       log.save
     end
@@ -65,7 +64,6 @@ class LogsController < ApplicationController
     log_params[:flag].each do |key, value|
       @log[index].student_id = key.to_i
       @log[index].flag = value
-      @log[index].lesson_id = log_params[:lesson_id].to_i
       @log[index].date = log_params[:date]
       @log[index].save
       index+=1
@@ -129,6 +127,6 @@ def set_group
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def log_params
-    params.require(:log).permit(:lesson_id, :date, flag: params[:log][:flag].try(:keys))
+    params.require(:log).permit(:date, flag: params[:log][:flag].try(:keys))
   end
 end

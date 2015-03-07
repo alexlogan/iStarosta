@@ -6,12 +6,14 @@ class Ability
 
       can :read, :all
       cannot :read, MedicalCertificate
+      cannot :manage, Setting
 
       if user.admin?
         can :access, :rails_admin  
         can :dashboard
         can :manage, :all
       elsif user.group.present?
+        can :manage, Setting, :group => { :id => user.group.id }
         can :manage, Group, :id => user.group.id
         can :manage, Lesson, :group => { :id => user.group.id }
         can :manage, Student, :group => { :id => user.group.id }

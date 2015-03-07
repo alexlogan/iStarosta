@@ -40,6 +40,8 @@ gem 'smarter_csv'
 
 gem 'axlsx_rails'
 
+gem 'puma'
+
 # paginator kaminari
 # gem 'kaminari'
 

@@ -22,12 +22,14 @@
     <table class="table table-bordered">
       <tr>
         <th>Предмет</th>
-        <th>Пар пропущено</th>
+        <th>1-й блок</th>
+        <th>2-й блок</th>
       </tr>
-      <% @student.absences.each do |key, value| %>
+      <% first_block = 0; second_block = 0; @student.absences.each do |key, value| %>
         <tr>
           <td> <%= key %> </td>
-          <td><%= value %></td>
+          <td><%= first_block+=value.first %></td>
+          <td><%= second_block+=value.second%></td>
         </tr>
       <% end %>
       <tr>
@@ -35,15 +37,18 @@
       </tr>
       <tr>
         <td>Всего</td>
-        <td><%= @student.absences.values.inject(:+) %></td>
+        <td><%= first_block %></td>
+        <td><%= second_block %></td>
       </tr>
       <tr>
         <td>По справкам</td>
-        <td><%= @student.leaves %></td>
+        <td><%= @student.leaves[:first] %></td>
+        <td><%= @student.leaves[:second] %></td>
       </tr>
       <tr>
         <td>Итого в часах</td>
-        <td><%= (@student.absences.values.inject(:+) - @student.leaves)*2 %></td>
+        <td><%= (first_block - @student.leaves[:first])*2 %></td>
+        <td><%= (second_block - @student.leaves[:second])*2 %></td>
       </tr>
     </table>
 </div>

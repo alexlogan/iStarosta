@@ -18,10 +18,14 @@ wb.add_worksheet(name: "Report") do |sheet|
 
   @students.each do |student|
     sheet.add_row [student.name]
-    student.absences.values.map { |value| sheet.rows.last.add_cell value}
-    sheet.rows.last.add_cell student.leaves
-    sheet.rows.last.add_cell student.absences.values.inject(:+) - student.leaves
-    sheet.rows.last.add_cell (student.absences.values.inject(:+) - student.leaves)*2
+    student.absences.values.each do |value|
+      sheet.rows.last.add_cell flash.now[:block]=='first' ? value.first : value.second
+    end
+    sheet.rows.last.add_cell flash.now[:block]=='first' ? student.leaves[:first ]: student.leaves[:second]
+    sheet.rows.last.add_cell student.absences.values.inject(:+).first - student.leaves[:first] if flash.now[:block]=='first'
+    sheet.rows.last.add_cell student.absences.values.inject(:+).second - student.leaves[:second] if flash.now[:block]=='second'
+    sheet.rows.last.add_cell (student.absences.values.inject(:+).first - student.leaves[:first])*2 if flash.now[:block]=='first'
+    sheet.rows.last.add_cell (student.absences.values.inject(:+).second - student.leaves[:second])*2 if flash.now[:block]=='second'
   end
   sheet.column_widths *([10]*sheet.column_info.count)
 end

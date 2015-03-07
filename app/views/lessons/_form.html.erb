@@ -3,9 +3,11 @@
 
       <%= f.error_notification %>
 
-      <%= f.input :name, placeholder: 'Введите название' %>
+      <%= f.input :name, placeholder: 'Введите название', label: 'Название' %>
 
-      <%= f.input :kind, as: :radio_buttons, :collection => Lesson.kinds.keys %>
+      <%= f.input :kind, as: :radio_buttons, :collection => Lesson.kinds.keys, label: 'Тип' %>
+
+      <%= f.input :semester, as: :select, collection: 1..12, label: 'Cеместр', selected: @lesson.new_record? ? @group.setting.current_semester : @lesson.semester %>
 
     <div class="form-group">
       <%= f.button :submit %>

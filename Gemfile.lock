@@ -112,6 +112,8 @@ GEM
     orm_adapter (0.5.0)
     pg (0.18.1)
     pivot_table (0.4.0)
+    puma (2.11.1)
+      rack (>= 1.1, < 2.0)
     rack (1.6.0)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -227,6 +229,7 @@ DEPENDENCIES
   mysql2
   pg
   pivot_table
+  puma
   rails (= 4.2.0)
   rails_12factor
   rails_admin

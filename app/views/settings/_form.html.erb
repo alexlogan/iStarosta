@@ -1,0 +1,24 @@
+<div class="col-md-6 col-sm-6 col-xs-10">
+
+<%= simple_form_for [@group, @setting], method: :patch, html: {class: "form-horizontal"}, wrapper: :horizontal_form do |f| %>
+
+      <%= f.error_notification %>
+
+      <%= f.input :current_semester, as: :select, collection: 1..12, label: 'Текущий семестр' %>
+
+      <%= f.input :current_block, as: :select, collection: 1..2, label: 'Текущий блок' %>
+
+      <%= f.label 'Конец 1-го / Начало 2-го блока (дата)' %>
+
+      <div class="form-group">
+        <div class="input-group date settings">
+          <%= text_field_tag("setting[threshold_date]", @setting.threshold_date, {class: "form-control" } ) %>
+          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+      </div>
+
+    <div class="form-group">
+      <%= f.button :submit %>
+    </div>
+  <% end %>
+</div>

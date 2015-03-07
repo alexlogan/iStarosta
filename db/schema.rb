@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226100055) do
+ActiveRecord::Schema.define(version: 20150303062206) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -22,10 +22,11 @@ ActiveRecord::Schema.define(version: 20150226100055) do
 
   create_table "lessons", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.integer  "group_id",   limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
     t.integer  "kind",       limit: 4
+    t.integer  "semester",   limit: 4,   default: 1, null: false
+    t.integer  "group_id",   limit: 4
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   create_table "logs", force: :cascade do |t|
@@ -33,16 +34,27 @@ ActiveRecord::Schema.define(version: 20150226100055) do
     t.integer  "lesson_id",  limit: 4,                 null: false
     t.boolean  "flag",       limit: 1, default: false, null: false
     t.date     "date",                                 null: false
+    t.integer  "block",      limit: 4, default: 1,     null: false
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
   end
 
   create_table "medical_certificates", force: :cascade do |t|
     t.integer  "student_id", limit: 4, null: false
+    t.integer  "semester",   limit: 4, null: false
     t.date     "from",                 null: false
     t.date     "till",                 null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "current_semester", limit: 4, default: 1, null: false
+    t.integer  "current_block",    limit: 4, default: 1, null: false
+    t.date     "threshold_date"
+    t.integer  "group_id",         limit: 4,             null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   create_table "students", force: :cascade do |t|

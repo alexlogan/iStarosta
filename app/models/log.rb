@@ -3,7 +3,13 @@ class Log < ActiveRecord::Base
   belongs_to :student
   belongs_to :group
   before_save :check_student_id
+  after_create :add_block
   validates :date, presence: true
+  validates :block, presence: true, numericality: {
+                       only_integer: true,
+                       greater_than_or_equal_to:  1,
+                       less_than_or_equal_to: 2
+                     }
   validates :lesson_id, presence: true, numericality: {only_integer: true}
   validates :student_id, presence: true, numericality: {only_integer: true}
 
@@ -31,6 +37,12 @@ class Log < ActiveRecord::Base
 
 
   private
+
+  def add_block
+    self.block = self.lesson.group.setting.current_block
+    self.save
+  end
+
   def check_student_id
     unless Student.exists?(self.student_id)
       false

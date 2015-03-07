@@ -9,10 +9,6 @@ class LessonsController < ApplicationController
   # GET /lessons.json
   def index
     @lessons = @lessons.order(:name)
-    respond_to do |format|
-      format.html
-      format.csv { send_data @group.logs.to_csv, filename: "Все ведомости.csv"}
-    end
   end
 
   # GET /lessons/1
@@ -66,19 +62,6 @@ class LessonsController < ApplicationController
     end
   end
 
-  def export_report
-    @lessons = @group.lessons.all.order(:name)
-    @students = @group.students.all.order(:name)
-    respond_to do |format|
-      format.xlsx { render :xlsx => 'export_report', filename: "Отчет.xlsx"}
-    end
-  end
-
-  def import
-    Log.import(params[:file])
-    redirect_to lessons_path, notice: 'Logs imported.'
-  end
-
   private
 
   def check_uploaded_file(file = params[:file])
@@ -107,6 +90,6 @@ class LessonsController < ApplicationController
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_params
-    params.require(:lesson).permit(:name, :kind)
+    params.require(:lesson).permit(:name, :kind, :semester)
   end
 end
