@@ -8,8 +8,10 @@
   <div class="form-inputs">
     <%= f.input :email, required: true, autofocus: true %>
 
+    <%= f.input :name, placeholder: 'Ваше имя', required: true, label: 'Ваше имя' %>
+
     <%= f.simple_fields_for :group do |group| %>
-        <%= group.input :name, label: "Group name", placeholder: "Your group name", required: true %>
+        <%= group.input :name, label: 'Название группы', placeholder: 'Название группы', required: true %>
     <% end %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
