@@ -1,5 +1,8 @@
 wb = xlsx_package.workbook
 
+first_block_total = 0
+second_block_total = 0
+
 header = wb.styles.add_style :alignment => {
                                :horizontal => :center,
                                :vertical => :center ,
@@ -16,16 +19,27 @@ wb.add_worksheet(name: "Report") do |sheet|
   sheet.rows.last.add_cell 'В часах'
   sheet.row_style 0, header
 
+
   @students.each do |student|
     sheet.add_row [student.name]
-    student.absences.values.each do |value|
-      sheet.rows.last.add_cell flash.now[:block]=='first' ? value.first : value.second
+      if flash.now[:block]=='first'
+        student.absences.values.each do |value|
+          sheet.rows.last.add_cell value[:first]
+          first_block_total+=value[:first]
+        end
+        sheet.rows.last.add_cell student.leaves[:first ]
+        sheet.rows.last.add_cell first_block_total - student.leaves[:first]
+        sheet.rows.last.add_cell (first_block_total - student.leaves[:first])*2
+      else if flash.now[:block]=='second'
+          student.absences.values.each do |value|
+            sheet.rows.last.add_cell value[:second]
+            second_block_total+=value[:second]
+          end
+          sheet.rows.last.add_cell student.leaves[:second ]
+          sheet.rows.last.add_cell second_block_total - student.leaves[:second]
+          sheet.rows.last.add_cell (second_block_total - student.leaves[:second])*2
+        end
+      end
     end
-    sheet.rows.last.add_cell flash.now[:block]=='first' ? student.leaves[:first ]: student.leaves[:second]
-    sheet.rows.last.add_cell student.absences.values.inject(:+).first - student.leaves[:first] if flash.now[:block]=='first'
-    sheet.rows.last.add_cell student.absences.values.inject(:+).second - student.leaves[:second] if flash.now[:block]=='second'
-    sheet.rows.last.add_cell (student.absences.values.inject(:+).first - student.leaves[:first])*2 if flash.now[:block]=='first'
-    sheet.rows.last.add_cell (student.absences.values.inject(:+).second - student.leaves[:second])*2 if flash.now[:block]=='second'
-  end
   sheet.column_widths *([10]*sheet.column_info.count)
 end

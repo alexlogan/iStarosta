@@ -37,10 +37,10 @@ class Student < ActiveRecord::Base
       semester: self.group.setting.current_semester
     ).order(:name)
     lessons.each do |lesson|
-      self.absences[lesson.name.to_sym] = [
-        lesson.logs.where(block: 1, flag: false, student_id: self.id).count,
-        lesson.logs.where(block: 2, flag: false, student_id: self.id).count
-      ]
+      self.absences[lesson.name.to_sym] = {
+        first: lesson.logs.where(block: 1, flag: false, student_id: self.id).count,
+        second: lesson.logs.where(block: 2, flag: false, student_id: self.id).count
+      }
     end
   end
 
