@@ -7,7 +7,7 @@ class LessonsController < ApplicationController
   # GET /lessons
   # GET /lessons.json
   def index
-    @lessons = @lessons.order(:name)
+    @lessons = @lessons.where(semester: @group.setting.current_semester).order(:name)
   end
 
   # GET /lessons/1
