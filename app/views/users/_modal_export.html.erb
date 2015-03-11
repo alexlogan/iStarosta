@@ -1,0 +1,42 @@
+<!-- Modal -->
+<div class="modal fade" id="Export" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Экспорт</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :logs %>
+                  <%= submit_tag 'Логи', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :lessons %>
+                  <%= submit_tag 'Дисциплины', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <%= form_tag :export, method: :post, class: "form-horizontal" do %>
+                  <%= hidden_field_tag "export[subject]", :students %>
+                  <%= submit_tag 'Студенты', class: "btn btn-lg btn-block btn-primary" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+
+    </div>
+  </div>
+</div>
