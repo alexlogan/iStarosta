@@ -18,8 +18,19 @@
       <tr>
         <th scope="row"><%= index+1 %></th>
         <td class="text-center"><%= student.name %></td>
-        <td class="text-center"><span class="badge badge-low"><%= student.absences.values.inject(:+).try(:first) %></span></td>
-        <td class="text-center"><span class="badge badge-low"><%= student.absences.values.inject(:+).try(:second) %></span></td>
+        <td class="text-center">
+          <span class="badge badge-low">
+            <!--Сумма соответствующих эл-тов (1-й, 2-й блоки) в массивах пропусков по дисциплинам-->
+            <%= student.absences.values.inject(0) { |sum, lesson_absence|
+              sum + lesson_absence[:first]} %>
+          </span>
+        </td>
+        <td class="text-center">
+          <span class="badge badge-low">
+            <%= student.absences.values.inject(0) { |sum, lesson_absence|
+              sum + lesson_absence[:second]} %>
+          </span>
+        </td>
         <td class="text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Подробно', student, class: "btn btn-success" %>

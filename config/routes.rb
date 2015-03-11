@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get 'account' => 'users#account', as: :user_account
   post 'export' => 'users#export', as: :export
-  post 'import' => 'users#import', as: :import
+  post 'import' => 'users#import', as: :import_logs
 
   get 'group/settings/edit' => 'settings#edit', as: :edit_group_setting
   patch 'group/settings' => 'settings#update', as: :group_setting
@@ -17,12 +17,13 @@ Rails.application.routes.draw do
   end
 
   resources :students do
+    collection { post :import}
     resources :medical_certificates
   end
 
   resources :lessons do
+    collection { post :import}
     resources :logs, param: :date do
-      collection { post :import}
     end
   end
 

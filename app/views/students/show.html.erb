@@ -25,11 +25,11 @@
         <th>1-й блок</th>
         <th>2-й блок</th>
       </tr>
-      <% first_block = 0; second_block = 0; @student.absences.each do |key, value| %>
+      <% @student.absences.each do |key, value| %>
         <tr>
           <td> <%= key %> </td>
-          <td><%= first_block+=value.first %></td>
-          <td><%= second_block+=value.second%></td>
+          <td><%= value[:first]%></td>
+          <td><%= value[:second]%></td>
         </tr>
       <% end %>
       <tr>
@@ -37,8 +37,14 @@
       </tr>
       <tr>
         <td>Всего</td>
-        <td><%= first_block %></td>
-        <td><%= second_block %></td>
+        <td>
+          <%= first_block=@student.absences.values.inject(0) { |sum, lesson_absence|
+                                sum + lesson_absence[:first]} %>
+        </td>
+        <td>
+          <%= second_block=@student.absences.values.inject(0) { |sum, lesson_absence|
+                                sum + lesson_absence[:second]} %>
+        </td>
       </tr>
       <tr>
         <td>По справкам</td>

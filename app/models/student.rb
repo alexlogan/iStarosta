@@ -14,6 +14,23 @@ class Student < ActiveRecord::Base
             }
   attr_accessor :leaves, :absences
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |student|
+        csv << student.attributes.values_at(*column_names)
+      end
+    end
+  end
+
+  def self.import(file)
+    SmarterCSV.process(file.path) do |array|
+      student = find_by_id(array.first[:id]) || new
+      student.attributes = array.first
+      student.save
+    end
+  end
+
   private
 
   def create_logs
@@ -37,10 +54,10 @@ class Student < ActiveRecord::Base
       semester: self.group.setting.current_semester
     ).order(:name)
     lessons.each do |lesson|
-      self.absences[lesson.name.to_sym] = [
-        lesson.logs.where(block: 1, flag: false, student_id: self.id).count,
-        lesson.logs.where(block: 2, flag: false, student_id: self.id).count
-      ]
+      self.absences[lesson.name.to_sym] = {
+        first: lesson.logs.where(block: 1, flag: false, student_id: self.id).count,
+        second: lesson.logs.where(block: 2, flag: false, student_id: self.id).count
+      }
     end
   end
 

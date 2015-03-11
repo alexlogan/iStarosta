@@ -17,6 +17,23 @@ class Lesson < ActiveRecord::Base
   attr_accessor :attendance
   enum kind: [:Лекция, :Практика]
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |lesson|
+        csv << lesson.attributes.values_at(*column_names)
+      end
+    end
+  end
+
+  def self.import(file)
+    SmarterCSV.process(file.path) do |array|
+      lesson = find_by_id(array.first[:id]) || new
+      lesson.attributes = array.first
+      lesson.save
+    end
+  end
+
   private
   def add_type_to_name
     case self.kind

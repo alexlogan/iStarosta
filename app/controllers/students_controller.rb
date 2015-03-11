@@ -13,7 +13,6 @@ class StudentsController < ApplicationController
   # GET /students/1
   # GET /students/1.json
   def show
-    render json: @student.absences
   end
 
   # GET /students/new
@@ -60,6 +59,11 @@ class StudentsController < ApplicationController
       format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def import
+    Student.import(params[:file])
+    redirect_to students_path, notice: 'Students imported.'
   end
 
   private

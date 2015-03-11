@@ -1,14 +1,27 @@
 class UsersController < ApplicationController
   before_action :set_user
   before_action :check_auth
+  before_action :check_uploaded_file, only: :import
 
   def account
   end
 
   def export
-    respond_to do |format|
-      format.html { export_report(report_params) }
-      format.csv { send_data @user.group.logs.to_csv, filename: "All logs.csv"}
+    if export_params[:block].present?
+      export_report(export_params[:block])
+    else
+      if export_params[:subject].present?
+        case export_params[:subject]
+          when 'logs'
+            send_data @user.group.logs.to_csv, filename: "All logs.csv"
+          when 'lessons'
+            send_data @user.group.lessons.to_csv, filename: "All lessons.csv"
+          when 'students'
+            send_data @user.group.students.to_csv, filename: "All students.csv"
+          else
+            redirect_to user_account_path, alert: 'Ошибка при экспорте'
+        end
+      end
     end
   end
 
@@ -22,9 +35,17 @@ class UsersController < ApplicationController
   def export_report(params)
     @lessons = @user.group.lessons.where(semester: @user.group.setting.current_semester).order(:name)
     @students = @user.group.students.all.order(:name)
-    flash.now[:block] = params[:block]
+    flash.now[:block] = params
     render :xlsx => 'export_report',
-           filename: params[:block] == 'first' ? "#{@user.group.name}_1_блок.xlsx" : "#{@user.group.name}_2_блок.xlsx"
+           filename: params == 'first' ? "#{@user.group.name}_1_блок.xlsx" : "#{@user.group.name}_2_блок.xlsx"
+  end
+
+  def check_uploaded_file(file = params[:file])
+    if file.present?
+      redirect_to user_account_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
+    else
+      redirect_to user_account_path, alert: 'Файл не выбран'
+    end
   end
 
   def check_auth
@@ -35,7 +56,7 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
-  def report_params
-    params.permit(:block)
+  def export_params
+    params.require(:export).permit(:block, :subject)
   end
 end
