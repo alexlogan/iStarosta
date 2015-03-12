@@ -3,6 +3,7 @@ class LessonsController < ApplicationController
   before_action :check_lesson_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
+  before_action :check_uploaded_file, only: :import
 
   # GET /lessons
   # GET /lessons.json
@@ -62,11 +63,20 @@ class LessonsController < ApplicationController
   end
 
   def import
+    @group.lessons.destroy_all
     Lesson.import(params[:file])
     redirect_to lessons_path, notice: 'Lessons imported.'
   end
 
   private
+
+  def check_uploaded_file(file = params[:file])
+    if file.present?
+      redirect_to user_account_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
+    else
+      redirect_to user_account_path, alert: 'Файл не выбран'
+    end
+  end
 
   def check_group_id
     redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
