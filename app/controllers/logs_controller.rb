@@ -84,7 +84,8 @@ class LogsController < ApplicationController
   end
 
   def import
-      Log.import(params[:file])
+    @group.logs.destroy_all
+    Log.import(params[:file])
       redirect_to lesson_logs_path, notice: 'Logs imported.'
   end
 
@@ -92,9 +93,9 @@ class LogsController < ApplicationController
 
   def check_uploaded_file(file = params[:file])
     if file.present?
-      redirect_to lessons_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
+      redirect_to user_account_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
     else
-      redirect_to lessons_path, alert: 'Файл не выбран'
+      redirect_to user_account_path, alert: 'Файл не выбран'
     end
   end
 

@@ -3,6 +3,7 @@ class StudentsController < ApplicationController
   before_action :check_student_id, if: Proc.new { params[:id] }
   before_action :set_group
   load_and_authorize_resource :through => :group
+  before_action :check_uploaded_file, only: :import
 
   # GET /students
   # GET /students.json
@@ -62,18 +63,28 @@ class StudentsController < ApplicationController
   end
 
   def import
+    @group.students.destroy_all
     Student.import(params[:file])
     redirect_to students_path, notice: 'Students imported.'
   end
 
   private
-    def check_group_id
-      redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
-    end
 
-    def check_student_id
-      redirect_to groups_path, alert: %Q(Couldn't find Student with this 'id') unless Student.exists?(params[:id])
+  def check_uploaded_file(file = params[:file])
+    if file.present?
+      redirect_to user_account_path, alert: 'Разрешается импортировать только файл .csv' unless file.content_type == 'text/csv'
+    else
+      redirect_to user_account_path, alert: 'Файл не выбран'
     end
+  end
+
+  def check_group_id
+    redirect_to groups_path, alert: %Q(Couldn't find Group with this 'id') unless Group.exists?(params[:group_id])
+  end
+
+  def check_student_id
+    redirect_to groups_path, alert: %Q(Couldn't find Student with this 'id') unless Student.exists?(params[:id])
+  end
 
 
   def set_group
@@ -86,8 +97,8 @@ class StudentsController < ApplicationController
 
 
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def student_params
-      params.require(:student).permit(:name)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def student_params
+    params.require(:student).permit(:name)
+  end
 end

@@ -30,7 +30,9 @@
                       <div class="form-group">
                         <%= file_field_tag :file, accept: '.csv'%>
                       </div>
-                      <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                      <div class="form-group">
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                      </div>
                   <% end %>
                 </div>
             <% end %>
@@ -47,7 +49,7 @@
                          class: "btn btn-lg btn-block btn-primary" %>
 
           <div class="collapse" id="collapseImportLessons">
-            <% if can?(:import, Student)%>
+            <% if can?(:import, Lesson)%>
                 <div class="container-fluid well well-sm">
                   <%= form_tag import_lessons_path, class: "form-inline", multipart: true do %>
                       <div class="form-group">
@@ -56,7 +58,9 @@
                       <div class="form-group">
                         <%= file_field_tag :file, accept: '.csv'%>
                       </div>
-                      <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                      <div class="form-group">
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                      </div>
                   <% end %>
                 </div>
             <% end %>
@@ -73,7 +77,7 @@
                          class: "btn btn-lg btn-block btn-primary" %>
 
           <div class="collapse" id="collapseImportStudents">
-            <% if can?(:import, Lesson)%>
+            <% if can?(:import, Student)%>
                 <div class="container-fluid well well-sm">
                   <%= form_tag import_students_path, class: "form-inline", multipart: true do %>
                       <div class="form-group">
@@ -82,7 +86,9 @@
                       <div class="form-group">
                         <%= file_field_tag :file, accept: '.csv'%>
                       </div>
-                      <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-primary' %>
+                      <div class="form-group">
+                        <%= submit_tag 'Загрузить', class: 'btn btn-sm btn-default' %>
+                      </div>
                   <% end %>
                 </div>
             <% end %>
@@ -92,6 +98,9 @@
       </div>
 
       <div class="modal-footer">
+        <div class="alert alert-danger text-left">
+          Внимание! Данные будут полностью удалены и заменены импортируемыми!
+        </div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
       </div>
     </div>
