@@ -15,6 +15,7 @@ class Student < ActiveRecord::Base
   attr_accessor :leaves, :absences
 
   def self.to_csv(options = {})
+    column_names = %w(id name)
     CSV.generate(options) do |csv|
       csv << column_names
       all.each do |student|
@@ -23,11 +24,15 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.import(file)
+  def self.import(user, file)
     SmarterCSV.process(file.path) do |array|
-      student = find_by_id(array.first[:id]) || new
-      student.attributes = array.first
-      student.save
+      student = find_by_id(array.first[:id]) || user.group.students.build
+      if user.can? :manage, student
+        student.name = array.first[:name]
+        student.save
+      else
+        raise IOError
+      end
     end
   end
 

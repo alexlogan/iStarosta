@@ -18,8 +18,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  ROLES = %i[admin]
-  # arr.reject {|e| e == 5}
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, :to => :ability
 
   def with_group
     build_group if group.nil?

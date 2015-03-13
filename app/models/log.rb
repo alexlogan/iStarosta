@@ -3,7 +3,7 @@ class Log < ActiveRecord::Base
   belongs_to :student
   belongs_to :group
   before_save :check_student_id
-  after_create :add_block
+  after_create :add_block, if: Proc.new{ block.blank? }
   validates :date, presence: true
   validates :block, presence: true, numericality: {
                        only_integer: true,
@@ -15,6 +15,7 @@ class Log < ActiveRecord::Base
 
 
   def self.to_csv(options = {})
+    column_names = %w(id student_id lesson_id flag date block)
     CSV.generate(options) do |csv|
       csv << column_names
       all.each do |log|
@@ -23,16 +24,24 @@ class Log < ActiveRecord::Base
     end
   end
 
-  def self.import(file)
-    SmarterCSV.process(file.path) do |array|
-      if Lesson.exists?(array.first[:lesson_id])
-        log = find_by_id(array.first[:id]) || new
-        log.attributes = array.first
-        log.save
-      else
-        break
+  def self.import(user, file)
+    Log.transaction do
+      user.group.delete_group_logs
+      SmarterCSV.process(file.path) do |array|
+        if user.group.lessons.exists?(array.first[:lesson_id]) and user.group.students.exists?(array.first[:student_id])
+          lesson = Lesson.find_by_id(array.first[:lesson_id])
+          log = find_by_id(array.first[:id]) || lesson.logs.build
+          log.student_id = array.first[:student_id]
+          log.flag = array.first[:flag]
+          log.date = array.first[:date]
+          log.block = array.first[:block]
+          log.save
+        else
+          raise IOError
+        end
       end
     end
+
   end
 
 

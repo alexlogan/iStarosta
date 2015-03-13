@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user
   before_action :check_auth
-  before_action :check_uploaded_file, only: :import
+  before_action :check_uploaded_file, only: :import_logs
+
+  rescue_from IOError, :with => :import_error
 
   def account
   end
@@ -25,12 +27,16 @@ class UsersController < ApplicationController
     end
   end
 
-  def import
-    Log.import(params[:file])
+  def import_logs
+    Log.import(@user, params[:file])
     redirect_to lessons_path, notice: 'Logs imported.'
   end
 
   private
+
+  def import_error
+    redirect_to user_account_path, alert: 'Ошибка импорта логов, проверьте корректность данных'
+  end
 
   def export_report(params)
     @lessons = @user.group.lessons.where(semester: @user.group.setting.current_semester).order(:name)

@@ -64,7 +64,7 @@ class StudentsController < ApplicationController
 
   def import
     @group.students.destroy_all
-    Student.import(params[:file])
+    Student.import(current_user, params[:file])
     redirect_to students_path, notice: 'Students imported.'
   end
 

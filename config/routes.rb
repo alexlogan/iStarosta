@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get 'account' => 'users#account', as: :user_account
   post 'export' => 'users#export', as: :export
-  post 'import' => 'users#import', as: :import_logs
+  post 'logs/import' => 'users#import_logs', as: :import_logs
 
   get 'group/settings/edit' => 'settings#edit', as: :edit_group_setting
   patch 'group/settings' => 'settings#update', as: :group_setting

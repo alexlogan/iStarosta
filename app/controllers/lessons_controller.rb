@@ -64,7 +64,7 @@ class LessonsController < ApplicationController
 
   def import
     @group.lessons.destroy_all
-    Lesson.import(params[:file])
+    Lesson.import(current_user, params[:file])
     redirect_to lessons_path, notice: 'Lessons imported.'
   end
 
