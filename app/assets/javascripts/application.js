@@ -18,7 +18,8 @@
 //= require bootstrap-datepicker
 //= require app
 //= require google_analytics
-//= require_tree .
+//= require select2.min
+// require_tree .
 //= require turbolinks
 
 

@@ -31,3 +31,7 @@ $(document).on "ready page:load", ->
     autoclose: true
     todayHighlight: true
   return
+
+  $(document).on "ready page:load", ->
+    $(".input-group.group.name").select()
+  return
