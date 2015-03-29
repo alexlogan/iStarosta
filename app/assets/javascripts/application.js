@@ -13,13 +13,9 @@
 //= require jquery
 // require jquery.turbolinks.min
 //= require jquery_ujs
-//= require bootstrap.min
 //= require jquery-2.1.1.min
-//= require bootstrap-datepicker
-//= require app
-//= require google_analytics
-//= require select2.min
-// require_tree .
+//= require select2
+//= require_tree .
 //= require turbolinks
 
 

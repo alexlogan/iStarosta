@@ -35,6 +35,11 @@ class GroupsController < ApplicationController
     end
   end
 
+  def search
+    group = Group.find(group_params[:id])
+    redirect_to group
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
@@ -43,6 +48,6 @@ class GroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params[:group]
+      params.require(:group).permit(:id, :name)
     end
 end

@@ -14,15 +14,17 @@ $(document).on "ready page:load", ->
     format: "yyyy-mm-dd"
     autoclose: true
     todayHighlight: true
+    language: "ru"
   return
 
 $(document).on "ready page:load", ->
   $(".input-group.date.logs").datepicker
     format: "yyyy-mm-dd"
     endDate: "today"
-    daysOfWeekDisabled: "6"
+    daysOfWeekDisabled: "7"
     autoclose: true
     todayHighlight: true
+    language: "ru"
   return
 
 $(document).on "ready page:load", ->
@@ -30,8 +32,11 @@ $(document).on "ready page:load", ->
     format: "yyyy-mm-dd"
     autoclose: true
     todayHighlight: true
+    language: "ru"
   return
 
-  $(document).on "ready page:load", ->
-    $(".input-group.group.name").select()
+$(document).on "ready page:load", ->
+  $(".input-group.form-control.group.name").select2
+    placeholder: "Выберете группу"
+    allowClear: true
   return

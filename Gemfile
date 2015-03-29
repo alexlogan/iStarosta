@@ -36,6 +36,8 @@ gem 'pivot_table'
 
 gem 'simple_form'
 
+gem "select2-rails"
+
 gem 'smarter_csv'
 
 gem 'axlsx_rails'

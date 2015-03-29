@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   patch 'group/settings' => 'settings#update', as: :group_setting
 
   resources :groups, only: [:index, :show, :edit, :update] do
+    collection { post :search}
     resources :students
     resources :lessons
   end
