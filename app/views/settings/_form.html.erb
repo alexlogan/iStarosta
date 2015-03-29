@@ -1,4 +1,4 @@
-<div class="col-md-6 col-sm-6 col-xs-10">
+<div class="col-md-7 col-sm-7 col-xs-10">
 
 <%= simple_form_for [@group, @setting], method: :patch, html: {class: "form-horizontal"}, wrapper: :horizontal_form do |f| %>
 
@@ -17,8 +17,12 @@
         </div>
       </div>
 
-    <div class="form-group">
-      <%= f.button :submit %>
-    </div>
+      <%= f.input :vk_group, label: 'ID группы VK', placeholder: 'ID сообщества VK' %>
+
+      <div class="form-group">
+        <%= f.button :submit %>
+      </div>
+
   <% end %>
+
 </div>

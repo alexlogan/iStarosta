@@ -27,3 +27,13 @@
     &nbsp;&nbsp;Дисциплины&nbsp;&nbsp;<%= @group.lessons.where(semester: @group.setting.current_semester).count %></h4></div>
 
 </div>
+
+<% if @group.setting.vk_group.present? %>
+
+    <div id="vk_groups"></div>
+
+    <%= javascript_tag do %>
+        VK.Widgets.Group("vk_groups", {mode: 2, width: "auto", height: "600"}, <%= @group.setting.vk_group %>);
+    <% end %>
+
+<% end %>

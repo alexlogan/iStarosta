@@ -25,7 +25,7 @@ class SettingsController < ApplicationController
   end
 
   def setting_params
-    params.require(:setting).permit(:current_semester, :current_block, :threshold_date)
+    params.require(:setting).permit(:current_semester, :current_block, :threshold_date, :vk_group)
   end
 
 end

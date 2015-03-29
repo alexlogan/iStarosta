@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303062206) do
+ActiveRecord::Schema.define(version: 20150329160002) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -49,12 +49,13 @@ ActiveRecord::Schema.define(version: 20150303062206) do
   end
 
   create_table "settings", force: :cascade do |t|
-    t.integer  "current_semester", limit: 4, default: 1, null: false
-    t.integer  "current_block",    limit: 4, default: 1, null: false
+    t.integer  "current_semester", limit: 4,   default: 1, null: false
+    t.integer  "current_block",    limit: 4,   default: 1, null: false
     t.date     "threshold_date"
-    t.integer  "group_id",         limit: 4,             null: false
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.integer  "group_id",         limit: 4,               null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.string   "vk_group",         limit: 255
   end
 
   create_table "students", force: :cascade do |t|
