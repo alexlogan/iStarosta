@@ -26,7 +26,6 @@ class Log < ActiveRecord::Base
 
   def self.import(user, file)
     Log.transaction do
-      user.group.delete_group_logs
       SmarterCSV.process(file.path) do |array|
         if user.group.lessons.exists?(array.first[:lesson_id]) and user.group.students.exists?(array.first[:student_id])
           lesson = Lesson.find_by_id(array.first[:lesson_id])

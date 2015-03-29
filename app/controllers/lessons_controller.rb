@@ -63,7 +63,6 @@ class LessonsController < ApplicationController
   end
 
   def import
-    @group.lessons.destroy_all
     Lesson.import(current_user, params[:file])
     redirect_to lessons_path, notice: 'Lessons imported.'
   end

@@ -21,10 +21,6 @@ class Group < ActiveRecord::Base
   after_initialize :set_total_pairs, unless: Proc.new{ new_record? }
   attr_accessor :attendance, :total_pairs
 
-  def delete_group_logs
-    lessons.map { |lesson| lesson.logs.delete_all}
-  end
-
   private
   def create_setting
     build_setting if setting.nil?
