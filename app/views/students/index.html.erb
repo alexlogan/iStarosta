@@ -16,22 +16,22 @@
   <tbody>
   <% @students.each_with_index do |student, index| %>
       <tr>
-        <th scope="row"><%= index+1 %></th>
-        <td class="text-center"><%= student.name %></td>
-        <td class="text-center">
+        <th class="col-sm-1 col-md-1 col-xs-1" scope="row"><%= index+1 %></th>
+        <td class="col-sm-3 col-md-3 col-xs-2 text-center"><%= student.name %></td>
+        <td class="col-sm-1 col-md-1 col-xs-1 text-center">
           <span class="badge badge-low">
             <!--Сумма соответствующих эл-тов (1-й, 2-й блоки) в массивах пропусков по дисциплинам-->
             <%= student.absences.values.inject(0) { |sum, lesson_absence|
               sum + lesson_absence[:first]} %>
           </span>
         </td>
-        <td class="text-center">
+        <td class="col-sm-1 col-md-1 col-xs-1 text-center">
           <span class="badge badge-low">
             <%= student.absences.values.inject(0) { |sum, lesson_absence|
               sum + lesson_absence[:second]} %>
           </span>
         </td>
-        <td class="text-center">
+        <td class="col-sm-7 col-md-7 col-xs-7 text-center">
           <div class="btn-group" role="group" aria-label="...">
             <%= link_to 'Подробно', student, class: "btn btn-success" %>
             <%= link_to 'Изменить', edit_student_path(student), class: can?(:update, student) ? "btn btn-primary" : "btn btn-primary disabled" %>
