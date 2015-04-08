@@ -31,8 +31,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # jQuery Turbolinks
 gem 'jquery-turbolinks'
-# Pivot_table
-gem 'pivot_table'
 
 gem 'simple_form'
 

@@ -10,12 +10,15 @@ class Log < ActiveRecord::Base
                        greater_than_or_equal_to:  1,
                        less_than_or_equal_to: 2
                      }
+  validates :transaction_id, presence: true, numericality: {
+                    only_integer: true,
+                  }
   validates :lesson_id, presence: true, numericality: {only_integer: true}
   validates :student_id, presence: true, numericality: {only_integer: true}
 
 
   def self.to_csv(options = {})
-    column_names = %w(id student_id lesson_id flag date block)
+    column_names = %w(id student_id lesson_id flag date block transaction_id)
     CSV.generate(options) do |csv|
       csv << column_names
       all.each do |log|
@@ -34,6 +37,7 @@ class Log < ActiveRecord::Base
           log.flag = array.first[:flag]
           log.date = array.first[:date]
           log.block = array.first[:block]
+          log.transaction_id = array.first[:transaction_id]
           log.save
         else
           raise IOError

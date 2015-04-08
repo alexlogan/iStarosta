@@ -19,25 +19,25 @@
   <thead>
     <tr>
       <th scope="row"></th>
-      <% @grid.column_headers.each do |column_header| %>
-          <th><%= link_to column_header.to_formatted_s(:short), edit_lesson_log_path(params[:lesson_id], column_header) %></th>
+      <% @logs[:col_headers].each do |col_header| %>
+          <th><%= link_to col_header.date.to_formatted_s(:short), edit_lesson_log_path(params[:lesson_id], col_header.date, col_header.transaction_id, ) %></th>
       <% end %>
     </tr>
   </thead>
  <tbody>
- <% @grid.rows.each do |row| %>
+ <% @logs[:rows].each do |student| %>
      <tr>
-       <th><%= link_to row.header.name, student_path(row.header) %></th>
-       <% row.data.each do |data| leave = false %>
+       <th><%= link_to student.name, student_path(student) %></th>
+       <% student.logs.where(:lesson_id => @lesson).order(:date, :transaction_id).each do |log| leave = false %>
            <td>
-             <% if data.flag %>
+             <% if log.flag %>
                  <label class="btn btn-primary">
                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                  </label>
              <% else
-                  if row.header.medical_certificates.any?
-                    row.header.medical_certificates.each do |mc|
-                      if data.date.between?(mc.from, mc.till)
+                  if student.medical_certificates.any?
+                    student.medical_certificates.each do |mc|
+                      if log.date.between?(mc.from, mc.till)
                         leave = true
                         break
                       end

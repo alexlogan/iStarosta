@@ -12,14 +12,9 @@ class LogsController < ApplicationController
   # GET /lesson/:id/logs
   # GET /lesson/:id/logs.json
   def index
-    logs = @lesson.logs.joins(:student).order(:date, 'students.name')
-    @grid = PivotTable::Grid.new(:sort => false) do |g|
-      g.source_data = logs
-      g.column_name = :date
-      g.row_name = :student
-      g.value_name = :flag
-    end
-    @grid.build
+    @logs = Hash.new
+    @logs[:col_headers] = @lesson.logs.select(:date, :transaction_id).distinct.order(:date)
+    @logs[:rows] = @group.students.order(:name)
   end
 
   # GET /lesson/:id/logs/1
@@ -41,12 +36,14 @@ class LogsController < ApplicationController
   # POST /lesson/:id/logs
   # POST /lesson/:id/logs.json
   def create
+    transaction_id = Time.now.to_i + @lesson.id
     Log.transaction do
       log_params[:flag].each do |key, value|
         log = @lesson.logs.new
         log.student_id = key.to_i
         log.flag = value
         log.date = log_params[:date]
+        log.transaction_id = transaction_id
         log.save
       end
     end
@@ -111,7 +108,7 @@ def set_group
 
 # Use callbacks to share common setup or constraints between actions.
   def set_log
-    @log = @lesson.logs.joins(:student).where(date: params[:date]).order(:date, 'students.name')
+    @log = @lesson.logs.joins(:student).where(date: params[:date], transaction_id: params[:transaction_id]).order(:date, 'students.name')
   end
 
 # Never trust parameters from the scary internet, only allow the white list through.

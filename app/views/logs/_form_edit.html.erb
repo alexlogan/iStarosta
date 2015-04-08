@@ -1,4 +1,4 @@
-<%= form_tag(lesson_log_path(params[:lesson_id], @log[0].date), class: "form-horizontal") do %>
+<%= form_tag(lesson_log_path(params[:lesson_id], @log.first.date, @log.first.transaction_id), class: "form-horizontal") do %>
     <%= hidden_field_tag :_method, :patch %>
     <div class="form-group">
       <% @students.each_with_index do |student, index| %>

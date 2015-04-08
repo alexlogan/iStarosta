@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150329160002) do
+ActiveRecord::Schema.define(version: 20150408143811) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
@@ -30,13 +30,14 @@ ActiveRecord::Schema.define(version: 20150329160002) do
   end
 
   create_table "logs", force: :cascade do |t|
-    t.integer  "student_id", limit: 4,                 null: false
-    t.integer  "lesson_id",  limit: 4,                 null: false
-    t.boolean  "flag",       limit: 1, default: false, null: false
-    t.date     "date",                                 null: false
-    t.integer  "block",      limit: 4, default: 1,     null: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.integer  "student_id",     limit: 4,                 null: false
+    t.integer  "lesson_id",      limit: 4,                 null: false
+    t.boolean  "flag",           limit: 1, default: false, null: false
+    t.date     "date",                                     null: false
+    t.integer  "block",          limit: 4, default: 1,     null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.integer  "transaction_id", limit: 4,                 null: false
   end
 
   create_table "medical_certificates", force: :cascade do |t|

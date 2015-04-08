@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   resources :lessons do
     collection { post :import}
-    resources :logs, param: :date do
+    resources :logs, param: 'date/:transaction_id' do
     end
   end
 

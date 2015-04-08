@@ -111,7 +111,6 @@ GEM
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
     pg (0.18.1)
-    pivot_table (0.4.0)
     puma (2.11.1)
       rack (>= 1.1, < 2.0)
     rack (1.6.0)
@@ -230,7 +229,6 @@ DEPENDENCIES
   jquery-turbolinks
   mysql2
   pg
-  pivot_table
   puma
   rails (= 4.2.0)
   rails_12factor
