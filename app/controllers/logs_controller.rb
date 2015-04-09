@@ -36,14 +36,14 @@ class LogsController < ApplicationController
   # POST /lesson/:id/logs
   # POST /lesson/:id/logs.json
   def create
-    transaction_id = Time.now.to_i + @lesson.id
     Log.transaction do
       log_params[:flag].each do |key, value|
         log = @lesson.logs.new
         log.student_id = key.to_i
         log.flag = value
         log.date = log_params[:date]
-        log.transaction_id = transaction_id
+        log.block = @group.setting.current_block
+        log.transaction_id = Time.now.to_i + @lesson.id
         log.save
       end
     end

@@ -3,7 +3,6 @@ class Log < ActiveRecord::Base
   belongs_to :student
   belongs_to :group
   before_save :check_student_id
-  after_create :add_block, if: Proc.new{ block.blank? }
   validates :date, presence: true
   validates :block, presence: true, numericality: {
                        only_integer: true,
@@ -49,11 +48,6 @@ class Log < ActiveRecord::Base
 
 
   private
-
-  def add_block
-    self.block = self.lesson.group.setting.current_block
-    self.save
-  end
 
   def check_student_id
     unless Student.exists?(self.student_id)
