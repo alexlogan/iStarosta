@@ -60,8 +60,8 @@ class Student < ActiveRecord::Base
     ).order(:name)
     lessons.each do |lesson|
       self.absences[lesson.name.to_sym] = {
-        first: lesson.logs.where(block: 1, flag: false, student_id: self.id).count,
-        second: lesson.logs.where(block: 2, flag: false, student_id: self.id).count
+        first: lesson.logs.where(student_id: self.id, flag: false, block: 1).count,
+        second: lesson.logs.where(student_id: self.id, flag: false, block: 2).count
       }
     end
   end
@@ -69,7 +69,7 @@ class Student < ActiveRecord::Base
   def set_leaves
     self.leaves = {:first => 0, :second => 0}
     medical_certificates = self.medical_certificates.where(semester: self.group.setting.current_semester)
-    logs = self.logs.where(block: self.group.setting.current_block, flag: false)
+    logs = self.logs.where(flag: false, block: self.group.setting.current_block)
     if logs.any? && medical_certificates.any?
       logs.each do |log|
         medical_certificates.each do |mc|

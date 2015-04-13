@@ -31,6 +31,7 @@ class Lesson < ActiveRecord::Base
     SmarterCSV.process(file.path) do |array|
       lesson = find_by_id(array.first[:id]) || user.group.lessons.build
       if user.can? :manage, lesson
+        lesson.id = array.first[:id] if lesson.new_record?
         lesson.name = array.first[:name]
         lesson.kind = array.first[:kind]
         lesson.semester = array.first[:semester]
